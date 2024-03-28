@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  lift:
+    build: .
+    ports:
+      - "3006:3006"
+    volumes:
+      - ".:/opt/lift/src"
+    entrypoint: []
+    depends_on:
+      mariadb:
+          condition: service_healthy
+
+  mariadb:
+    image: mariadb:10.4
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'mysql'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+
