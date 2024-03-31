@@ -29,7 +29,7 @@ def prices():
         cursor.execute('INSERT INTO `base_price` (type, cost) VALUES (?, ?) ' +
             'ON DUPLICATE KEY UPDATE cost = ?', (lift_pass_type, lift_pass_cost, lift_pass_cost))
         return {}
-    elif request.method == 'GET':
+    else:
         cursor = connection.cursor()
         cursor.execute(f'SELECT cost FROM base_price '
                        + 'WHERE type = ? ', (request.args['type'],))
@@ -63,7 +63,7 @@ def prices():
                         if 'age' in request.args and request.args.get('age', type=int) > 64:
                             cost = result['cost'] * .75 * (1 - reduction / 100)
                             res['cost'] = math.ceil(cost)
-                        elif 'age' in request.args:
+                        else:
                             cost = result['cost'] * (1 - reduction / 100)
                             res['cost'] = math.ceil(cost)
             else:

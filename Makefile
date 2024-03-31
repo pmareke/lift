@@ -17,3 +17,9 @@ add-package: ## Add package to the project ex: make add-package package=XX
 .PHONY: test
 test: ## Run tests
 	docker compose run --rm lift poetry run pytest test -ra
+
+.PHONY: test-coverage
+test-coverage: ## Run tests coverage
+	docker compose run --rm lift coverage run --branch -m pytest test
+	docker compose run --rm lift coverage html
+  @echo "You can open the coverage report here: htmlcov/index.html"
