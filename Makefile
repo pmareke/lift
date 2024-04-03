@@ -18,6 +18,10 @@ add-package: ## Add package to the project ex: make add-package package=XX
 test: ## Run tests
 	docker compose run --rm lift poetry run pytest test -ra
 
+.PHONY: format
+format: ## Run format
+	docker compose run --rm --no-deps lift poetry run black src test
+
 .PHONY: test-coverage
 test-coverage: ## Run tests coverage
 	docker compose run --rm lift coverage run --branch -m pytest test
