@@ -22,8 +22,23 @@ test: ## Run tests
 format: ## Run format
 	docker compose run --rm --no-deps lift poetry run black src test
 
+.PHONY: check-format
+check-format: ## Check format
+	docker compose run --rm --no-deps lift poetry run black --check src test
+
+.PHONY: check-typing
+check-typing: ## Check typing
+	docker compose run --rm --no-deps lift poetry run mypy src test
+
 .PHONY: test-coverage
 test-coverage: ## Run tests coverage
 	docker compose run --rm lift coverage run --branch -m pytest test
 	docker compose run --rm lift coverage html
   @echo "You can open the coverage report here: htmlcov/index.html"
+
+.PHONY: local-setup
+local-setup: ## Set up the local environment (e.g. install git hooks)
+	scripts/local-setup.sh
+
+.PHONY: pre-commit
+pre-commit: check-format check-typing test

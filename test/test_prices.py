@@ -1,4 +1,5 @@
 import multiprocessing
+from typing import Generator
 
 import pytest
 import requests
@@ -9,22 +10,22 @@ from src.prices import app
 TEST_PORT = 3006
 
 
-def server(port):
+def server(port: int) -> None:
     app.run(port=port)
 
 
-def wait_for_server_to_start(server_url):
+def wait_for_server_to_start(server_url: str) -> None:
     started = False
     while not started:
         try:
             requests.get(server_url)
             started = True
-        except Exception as e:
+        except Exception:
             time.sleep(0.2)
 
 
 @pytest.fixture(autouse=True, scope="session")
-def lift_pass_pricing_app():
+def lift_pass_pricing_app() -> Generator:
     """starts the lift pass pricing flask app running on localhost"""
     p = multiprocessing.Process(target=server, args=(TEST_PORT,))
     p.start()
@@ -34,7 +35,7 @@ def lift_pass_pricing_app():
     p.terminate()
 
 
-def test_something(lift_pass_pricing_app):
-    response = requests.get(lift_pass_pricing_app + "/prices", params={"type": "1jour"})
+def test_something(lift_pass_pricing_app: str) -> None:
+    response = requests.get(f"{lift_pass_pricing_app}/prices", params={"type": "1jour"})
 
     assert response.json() == {"cost": 35}
