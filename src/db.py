@@ -1,4 +1,4 @@
-import pymysql.cursors
+from pymysql import connect
 
 from pymysql.connections import Connection
 from pymysql.cursors import Cursor
@@ -15,11 +15,11 @@ class PyMySQLCursorWrapper(Cursor):
         return str(super().mogrify(query, args))
 
 
-def create_lift_pass_db_connection(connection_options: dict) -> Connection:
-    return pymysql.connect(
-        host=connection_options["host"],
-        user=connection_options["user"],
-        password=connection_options["password"],
-        database=connection_options["database"],
+def create_lift_pass_db_connection() -> Connection:
+    return connect(
+        host="mariadb",
+        user="root",
+        password="mysql",
+        database="lift_pass",
         cursorclass=PyMySQLCursorWrapper,
     )

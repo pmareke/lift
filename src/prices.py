@@ -7,22 +7,11 @@ from src.db import create_lift_pass_db_connection
 
 app = Flask("lift-pass-pricing")
 
-connection_options = {
-    "host": "mariadb",
-    "user": "root",
-    "database": "lift_pass",
-    "password": "mysql",
-}
-
-connection = None
-
 
 @app.route("/prices", methods=["GET", "PUT"])
 def prices() -> dict:
     res = {}
-    global connection
-    if connection is None:
-        connection = create_lift_pass_db_connection(connection_options)
+    connection = create_lift_pass_db_connection()
     if request.method == "PUT":
         lift_pass_cost = request.args["cost"]
         lift_pass_type = request.args["type"]
