@@ -16,10 +16,13 @@ class PyMySQLCursorWrapper(Cursor):
 
 
 def create_lift_pass_db_connection() -> Connection:
-    return connect(
-        host="mariadb",
-        user="root",
-        password="mysql",
-        database="lift_pass",
-        cursorclass=PyMySQLCursorWrapper,
-    )
+    try:
+        return connect(
+            host="mariadb",
+            user="root",
+            password="mysql",
+            database="lift_pass",
+            cursorclass=PyMySQLCursorWrapper,
+        )
+    except Exception as ex:
+        print(f"Error connecting to database: {ex}")
