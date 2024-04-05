@@ -14,10 +14,6 @@ add-package: ## Add package to the project ex: make add-package package=XX
 	docker compose run --rm --no-deps lift poetry add $(package)
 	make build
 
-.PHONY: test
-test: ## Run tests
-	docker compose run --rm lift poetry run pytest test -ra
-
 .PHONY: format
 format: ## Run format
 	docker compose run --rm --no-deps lift poetry run black src test
@@ -30,11 +26,19 @@ check-format: ## Check format
 check-typing: ## Check typing
 	docker compose run --rm --no-deps lift poetry run mypy src test
 
+.PHONY: test
+test: ## Run tests
+	docker compose run --rm lift poetry run pytest test -ra
+
 .PHONY: test-coverage
 test-coverage: ## Run tests coverage
 	docker compose run --rm lift coverage run --branch -m pytest test
 	docker compose run --rm lift coverage html
   @echo "You can open the coverage report here: htmlcov/index.html"
+
+.PHONY: watch
+watch: ## Watch tests
+	docker compose run --rm lift poetry run ptw
 
 .PHONY: local-setup
 local-setup: ## Set up the local environment (e.g. install git hooks)
