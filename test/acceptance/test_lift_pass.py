@@ -1,6 +1,6 @@
 import pytest
 
-from src.prices import app
+from src.main import app
 
 
 class TestLiftPass:

@@ -5,7 +5,7 @@ import pytest
 import requests
 import time
 
-from src.prices import app
+from src.main import app
 
 TEST_PORT = 3006
 

@@ -1,29 +1,17 @@
 import math
 
-from flask import Flask
 from flask import request
 from datetime import datetime
-from src.db import create_lift_pass_db_connection
-
-app = Flask("lift-pass-pricing")
+from pymysql.connections import Connection
 
 
-@app.route("/prices", methods=["GET", "PUT"])
-def prices() -> dict:
-    res = {}
-    connection = create_lift_pass_db_connection()
-    if request.method == "PUT":
-        lift_pass_cost = request.args["cost"]
-        lift_pass_type = request.args["type"]
-        cursor = connection.cursor()
-        cursor.execute(
-            "INSERT INTO `base_price` (type, cost) VALUES (?, ?) "
-            + "ON DUPLICATE KEY UPDATE cost = ?",
-            (lift_pass_type, lift_pass_cost, lift_pass_cost),
-        )
-        return {}
-    else:
-        cursor = connection.cursor()
+class GetPriceController:
+    def __init__(self, connection: Connection) -> None:
+        self.connection = connection
+
+    def get_price(self) -> dict:
+        res = {}
+        cursor = self.connection.cursor()
         cursor.execute(
             f"SELECT cost FROM base_price " + "WHERE type = ? ", (request.args["type"],)
         )
@@ -34,7 +22,7 @@ def prices() -> dict:
             res["cost"] = 0
         else:
             if "type" in request.args and request.args["type"] != "night":
-                cursor = connection.cursor()
+                cursor = self.connection.cursor()
                 cursor.execute("SELECT * FROM holidays")
                 is_holiday = False
                 reduction = 0
@@ -77,8 +65,4 @@ def prices() -> dict:
                         res.update(result)
                 else:
                     res["cost"] = 0
-    return res
-
-
-if __name__ == "__main__":
-    app.run(port=3005)
+        return res
