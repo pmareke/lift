@@ -18,4 +18,4 @@ COPY --chown=lift . .
 
 USER lift
 
-CMD ["python", "-m", "src/prices.py"]
+CMD ["python", "-m", "src/main.py"]
