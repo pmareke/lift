@@ -1,5 +1,9 @@
 # Lift pass pricing
 
+## Ports and Adapters
+
+![Ports and Adapters](./images/ports&adapters.png)
+
 ![Image logo](./mountain-snow.jpg)
 
 This application solves the problem of calculating the pricing for ski lift passes.
@@ -14,8 +18,6 @@ so that the new feature requires minimum effort to implement.
 This kata models a common problem - code that makes no sense to unit test due to bad design.
 
 You can find a [video pitch here](http://youtube.com/watch?v=-gSyD60WAvc)
-
-
 
 ## When am I done?
 
