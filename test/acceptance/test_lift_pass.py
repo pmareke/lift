@@ -1,5 +1,7 @@
+from http.client import OK
 import pytest
 
+from expects import expect, equal
 from src.main import app
 
 
@@ -10,27 +12,27 @@ class TestLiftPass:
     def test_add_new_price(self) -> None:
         response = self.client.put("/prices", query_string={"type": "test", "cost": 35})
 
-        assert response.status_code == 200
+        expect(response.status_code).to(equal(OK))
 
     @pytest.mark.parametrize("type", ["1jour", "night"])
     def test_people_under_6_does_not_pay(self, type: str) -> None:
         response = self.client.get("/prices", query_string={"type": type, "age": 5})
 
-        assert response.json == {"cost": 0}
+        expect(response.json).to(equal({"cost": 0}))
 
     def test_is_holiday(self) -> None:
         response = self.client.get(
             "/prices", query_string={"type": "1jour", "date": "2019-02-25"}
         )
 
-        assert response.json == {"cost": 35}
+        expect(response.json).to(equal({"cost": 35}))
 
     def test_is_not_holiday(self) -> None:
         response = self.client.get(
             "/prices", query_string={"type": "1jour", "date": "2024-02-26"}
         )
 
-        assert response.json == {"cost": 23}
+        expect(response.json).to(equal({"cost": 23}))
 
     @pytest.mark.parametrize(
         "type,cost",
@@ -42,7 +44,7 @@ class TestLiftPass:
     def test_pass_without_age(self, type: str, cost: int) -> None:
         response = self.client.get("/prices", query_string={"type": type})
 
-        assert response.json == {"cost": cost}
+        expect(response.json).to(equal({"cost": cost}))
 
     @pytest.mark.parametrize(
         "age,expected_cost",
@@ -57,7 +59,7 @@ class TestLiftPass:
             "/prices", query_string={"type": "1jour", "age": age}
         )
 
-        assert response.json == {"cost": expected_cost}
+        expect(response.json).to(equal({"cost": expected_cost}))
 
     @pytest.mark.parametrize(
         "age,expected_cost",
@@ -71,4 +73,4 @@ class TestLiftPass:
             "/prices", query_string={"type": "night", "age": age}
         )
 
-        assert response.json == {"cost": expected_cost}
+        expect(response.json).to(equal({"cost": expected_cost}))

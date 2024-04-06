@@ -14,4 +14,6 @@ app.route("/prices", methods=["PUT"])(add_price_controller.add_price)
 get_price_controller = GetPriceController(connection)
 app.route("/prices", methods=["GET"])(get_price_controller.get_price)
 
-app.run(port=3005)
+
+def __main__() -> None:
+    app.run(port=3005)
