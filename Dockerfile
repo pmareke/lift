@@ -14,6 +14,8 @@ RUN poetry install
 
 ENV PYTHONPATH /opt/lift/src
 
+ENV PYTHONDONTWRITEBYTECODE 1
+
 COPY --chown=lift . .
 
 USER lift
