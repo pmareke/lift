@@ -15,41 +15,37 @@ class GetPriceQuery:
 
 class GetPriceQueryHandler:
     def __init__(self, connection: Connection) -> None:
-        self.connection = connection
+        self.cursor = connection.cursor()
 
     def execute(self, query: GetPriceQuery) -> dict:
         res = {}
-        cursor = self.connection.cursor()
-        cursor.execute(
-            f"SELECT cost FROM base_price " + "WHERE type = ? ", (query.liff_pass_type,)
+
+        self.cursor.execute(
+            "SELECT cost FROM base_price WHERE type = ? ", query.liff_pass_type
         )
-        row = cursor.fetchone()
-        result = {"cost": row[0]}
+        cost = self.cursor.fetchone()[0]
+
+        result = {"cost": cost}
         age = query.age
         if age and int(age) < 6:
             res["cost"] = 0
         else:
             if query.liff_pass_type and query.liff_pass_type != "night":
-                cursor = self.connection.cursor()
-                cursor.execute("SELECT * FROM holidays")
-                is_holiday = False
                 reduction = 0
-                for row in cursor.fetchall():
-                    holiday = row[0]
-                    if query.date:
-                        d = datetime.fromisoformat(query.date)
+                if query.date:
+                    self.cursor.execute("SELECT * FROM holidays")
+                    holidays = [holiday[0] for holiday in self.cursor.fetchall()]
+                    is_holiday = False
+                    date = datetime.fromisoformat(query.date)
+                    for holiday in holidays:
                         if (
-                            d.year == holiday.year
-                            and d.month == holiday.month
-                            and holiday.day == d.day
+                            date.year == holiday.year
+                            and date.month == holiday.month
+                            and holiday.day == date.day
                         ):
                             is_holiday = True
-                if (
-                    not is_holiday
-                    and query.date
-                    and datetime.fromisoformat(query.date).weekday() == 0
-                ):
-                    reduction = 35
+                    if not is_holiday and date.weekday() == 0:
+                        reduction = 35
 
                 # TODO: apply reduction for others
                 if age and int(age) < 15:
