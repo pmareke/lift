@@ -18,11 +18,11 @@ class GetPriceQueryHandler:
         self.cursor = connection.cursor()
 
     def execute(self, query: GetPriceQuery) -> dict:
+        type = query.liff_pass_type
         res = {}
 
-        self.cursor.execute(
-            "SELECT cost FROM base_price WHERE type = ? ", query.liff_pass_type
-        )
+        statement = "SELECT cost FROM base_price WHERE type = ? "
+        self.cursor.execute(statement, [type])
         cost = self.cursor.fetchone()[0]
 
         result = {"cost": cost}
@@ -33,10 +33,11 @@ class GetPriceQueryHandler:
             if query.liff_pass_type and query.liff_pass_type != "night":
                 reduction = 0
                 if query.date:
+                    date = datetime.fromisoformat(query.date)
+
                     self.cursor.execute("SELECT * FROM holidays")
                     holidays = [holiday[0] for holiday in self.cursor.fetchall()]
                     is_holiday = False
-                    date = datetime.fromisoformat(query.date)
                     for holiday in holidays:
                         if (
                             date.year == holiday.year
@@ -44,6 +45,7 @@ class GetPriceQueryHandler:
                             and holiday.day == date.day
                         ):
                             is_holiday = True
+
                     if not is_holiday and date.weekday() == 0:
                         reduction = 35
 

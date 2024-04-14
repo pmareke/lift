@@ -13,7 +13,10 @@ class AddPriceCommandHandler:
         self.cursor = connection.cursor()
 
     def execute(self, command: AddPriceCommand) -> dict:
-        query = "INSERT INTO `base_price` (type, cost) VALUES (?, ?) ON DUPLICATE KEY UPDATE cost = ?"
-        self.cursor.execute(query, [command.lift_pass_type, command.cost, command.cost])
+        type = command.lift_pass_type
+        cost = command.cost
+
+        statement = "INSERT INTO `base_price` (type, cost) VALUES (?, ?) ON DUPLICATE KEY UPDATE cost = ?"
+        self.cursor.execute(statement, [type, cost, cost])
 
         return {}
