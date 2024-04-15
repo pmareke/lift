@@ -5,6 +5,11 @@ from datetime import datetime
 
 from pymysql.connections import Connection
 
+from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepository
+from src.infrastructure.mysql.sql_lift_holiday_repository import (
+    SqlLiftHolidayRepository,
+)
+
 
 @dataclass
 class GetPriceQuery:
@@ -14,20 +19,23 @@ class GetPriceQuery:
 
 
 class GetPriceQueryHandler:
-    def __init__(self, connection: Connection) -> None:
-        self.cursor = connection.cursor()
+    def __init__(
+        self,
+        lift_price_repository: SqlLiftPriceRepository,
+        lift_holiday_repository: SqlLiftHolidayRepository,
+    ) -> None:
+        self.lift_price_repository = lift_price_repository
+        self.lift_holiday_repository = lift_holiday_repository
 
     def execute(self, query: GetPriceQuery) -> dict:
         type = query.liff_pass_type
         age = query.age
         date = query.date
 
-        statement = "SELECT cost FROM base_price WHERE type = ? "
-        self.cursor.execute(statement, [type])
-        cost = self.cursor.fetchone()[0]
+        cost = self.lift_price_repository.get_by_type(type)
         result = {"cost": cost}
 
-        res = {}
+        res: dict[str, float] = {}
         if age and int(age) < 6:
             res["cost"] = 0
         else:
@@ -35,18 +43,7 @@ class GetPriceQueryHandler:
                 reduction = 0
                 if date:
                     iso_date = datetime.fromisoformat(date)
-
-                    self.cursor.execute("SELECT * FROM holidays")
-                    holidays = [holiday[0] for holiday in self.cursor.fetchall()]
-                    is_holiday = False
-                    for holiday in holidays:
-                        if (
-                            iso_date.year == holiday.year
-                            and iso_date.month == holiday.month
-                            and holiday.day == iso_date.day
-                        ):
-                            is_holiday = True
-
+                    is_holiday = self.lift_holiday_repository.is_holiday(date)
                     if not is_holiday and iso_date.weekday() == 0:
                         reduction = 35
 
