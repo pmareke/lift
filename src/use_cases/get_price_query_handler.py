@@ -19,34 +19,35 @@ class GetPriceQueryHandler:
 
     def execute(self, query: GetPriceQuery) -> dict:
         type = query.liff_pass_type
-        res = {}
+        age = query.age
+        date = query.date
 
         statement = "SELECT cost FROM base_price WHERE type = ? "
         self.cursor.execute(statement, [type])
         cost = self.cursor.fetchone()[0]
-
         result = {"cost": cost}
-        age = query.age
+
+        res = {}
         if age and int(age) < 6:
             res["cost"] = 0
         else:
-            if query.liff_pass_type and query.liff_pass_type != "night":
+            if type and type != "night":
                 reduction = 0
-                if query.date:
-                    date = datetime.fromisoformat(query.date)
+                if date:
+                    iso_date = datetime.fromisoformat(date)
 
                     self.cursor.execute("SELECT * FROM holidays")
                     holidays = [holiday[0] for holiday in self.cursor.fetchall()]
                     is_holiday = False
                     for holiday in holidays:
                         if (
-                            date.year == holiday.year
-                            and date.month == holiday.month
-                            and holiday.day == date.day
+                            iso_date.year == holiday.year
+                            and iso_date.month == holiday.month
+                            and holiday.day == iso_date.day
                         ):
                             is_holiday = True
 
-                    if not is_holiday and date.weekday() == 0:
+                    if not is_holiday and iso_date.weekday() == 0:
                         reduction = 35
 
                 # TODO: apply reduction for others
@@ -57,7 +58,7 @@ class GetPriceQueryHandler:
                         cost = result["cost"] * (1 - reduction / 100)
                         res["cost"] = math.ceil(cost)
                     else:
-                        if query.age and int(age) > 64:
+                        if age and int(age) > 64:
                             cost = result["cost"] * 0.75 * (1 - reduction / 100)
                             res["cost"] = math.ceil(cost)
                         else:
