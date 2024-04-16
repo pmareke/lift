@@ -1,7 +1,6 @@
 from expects import expect, be_false, be_true
-from src.infrastructure.mysql.sql_lift_holiday_repository import (
-    SqlLiftHolidayRepositoryFactory,
-)
+
+from src.infrastructure.mysql.sql_lift_holiday_repository import SqlLiftHolidayRepositoryFactory
 
 
 class TestSqlLiftHolidayRepositoryIntegration:

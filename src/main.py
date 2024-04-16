@@ -1,9 +1,9 @@
 from flask import Flask
 
-from src.delivery.api.get_price_controller import GetPriceController
 from src.delivery.api.add_price_controller import AddPriceController
-from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepositoryFactory
+from src.delivery.api.get_price_controller import GetPriceController
 from src.infrastructure.mysql.sql_lift_holiday_repository import SqlLiftHolidayRepositoryFactory
+from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepositoryFactory
 from src.use_cases.add_price_command_handler import AddPriceCommandHandler
 from src.use_cases.get_price_query_handler import GetPriceQueryHandler
 

@@ -1,9 +1,10 @@
 from doublex import Mimic, Spy
 from doublex_expects import have_been_called_with
 from expects import expect, equal
+
 from src.delivery.api.add_price_controller import AddPriceController
-from src.use_cases.add_price_command_handler import AddPriceCommand, AddPriceCommandHandler
 from src.main import app
+from src.use_cases.add_price_command_handler import AddPriceCommand, AddPriceCommandHandler
 
 
 class TestAddPriceController:

@@ -1,5 +1,5 @@
-from datetime import date
 from pymysql.connections import Connection
+
 from src.infrastructure.mysql.connection.create_connection import create_connection
 
 

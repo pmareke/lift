@@ -1,4 +1,5 @@
 from flask import request
+
 from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHandler
 
 
@@ -11,4 +12,7 @@ class GetPriceController:
         age = request.args.get("age")
         date = request.args.get("date")
         query = GetPriceQuery(lift_pass_type, age, date)
-        return self.query_handler.execute(query)
+
+        cost = self.query_handler.execute(query)
+
+        return {"cost": cost}

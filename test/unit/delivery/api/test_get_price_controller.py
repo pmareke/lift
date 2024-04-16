@@ -1,9 +1,10 @@
 from doublex import Mimic, Spy
 from doublex_expects import have_been_called_with
 from expects import expect, equal
+
 from src.delivery.api.get_price_controller import GetPriceController
-from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHandler
 from src.main import app
+from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHandler
 
 
 class TestGetPriceController:
@@ -11,11 +12,12 @@ class TestGetPriceController:
         lift_pass_type = "1jour"
         age = "18"
         date = "2022-01-01"
+        cost = 100
         query_string = {"type": lift_pass_type, "age": age, "date": date}
         query = GetPriceQuery(lift_pass_type, age, date)
-        expected_response = {"cost": 100}
+        expected_response = {"cost": cost}
         with Mimic(Spy, GetPriceQueryHandler) as query_handler:
-            query_handler.execute(query).returns(expected_response)
+            query_handler.execute(query).returns(cost)
         get_price_controller = GetPriceController(query_handler)  # type: ignore
 
         with app.test_request_context(query_string=query_string):
