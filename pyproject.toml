@@ -24,3 +24,10 @@ doublex-expects = "^0.7.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+developer = ["mypy"]
+
+[tool.black]
+line-length = 120
+target-version = ['py310']

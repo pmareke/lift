@@ -1,9 +1,6 @@
 from flask import request
 
-from src.use_cases.add_price_command_handler import (
-    AddPriceCommand,
-    AddPriceCommandHandler,
-)
+from src.use_cases.add_price_command_handler import AddPriceCommand, AddPriceCommandHandler
 
 
 class AddPriceController:

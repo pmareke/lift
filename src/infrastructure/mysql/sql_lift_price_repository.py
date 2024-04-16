@@ -1,5 +1,5 @@
 from pymysql.connections import Connection
-from src.db import create_lift_pass_db_connection
+from src.infrastructure.mysql.connection.create_connection import create_connection
 
 
 class SqlLiftPriceRepository:
@@ -19,5 +19,5 @@ class SqlLiftPriceRepository:
 class SqlLiftPriceRepositoryFactory:
     @staticmethod
     def make() -> SqlLiftPriceRepository:
-        connection = create_lift_pass_db_connection()
+        connection = create_connection()
         return SqlLiftPriceRepository(connection)

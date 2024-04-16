@@ -1,5 +1,4 @@
 from expects import expect, equal
-from src.db import create_lift_pass_db_connection
 from src.infrastructure.mysql.sql_lift_price_repository import (
     SqlLiftPriceRepositoryFactory,
 )

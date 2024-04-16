@@ -1,6 +1,6 @@
 from datetime import date
 from pymysql.connections import Connection
-from src.db import create_lift_pass_db_connection
+from src.infrastructure.mysql.connection.create_connection import create_connection
 
 
 class SqlLiftHolidayRepository:
@@ -15,5 +15,5 @@ class SqlLiftHolidayRepository:
 class SqlLiftHolidayRepositoryFactory:
     @staticmethod
     def make() -> SqlLiftHolidayRepository:
-        connection = create_lift_pass_db_connection()
+        connection = create_connection()
         return SqlLiftHolidayRepository(connection)
