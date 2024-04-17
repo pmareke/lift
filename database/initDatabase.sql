@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS lift_pass.holidays (
     description VARCHAR(255) NOT NULL,
     PRIMARY KEY (holiday)
 );
-INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-02-18', 'winter');
-INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-02-25', 'winter');
-INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-03-04', 'winter');
-INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-03-05', 'winter');
+INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-02-18', 'winter'); -- Monday
+INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-02-25', 'winter'); -- Monday
+INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-03-04', 'winter'); -- Monday
+INSERT INTO lift_pass.holidays (holiday, description) VALUES ('2019-03-05', 'winter'); -- Tuesday
