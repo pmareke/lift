@@ -23,29 +23,29 @@ class TestLiftPass:
 
         expect(response.json).to(equal({"cost": 0}))
 
-    def test_is_holiday(self) -> None:
+    def test_is_holiday_and_monday(self) -> None:
         query_string = {"type": "1jour", "date": "2019-02-25"}
         response = self.client.get("/prices", query_string=query_string)
 
         expect(response.json).to(equal({"cost": 35}))
 
-    def test_is_not_holiday(self) -> None:
+    def test_is_not_holiday_but_monday(self) -> None:
         query_string = {"type": "1jour", "date": "2024-02-26"}
         response = self.client.get("/prices", query_string=query_string)
 
         expect(response.json).to(equal({"cost": 23}))
 
-    def test_is_not_monday(self) -> None:
-        query_string = {"type": "1jour", "date": "2024-04-16"}
+    def test_is_not_monday_but_holiday(self) -> None:
+        query_string = {"type": "1jour", "date": "2019-03-05"}
         response = self.client.get("/prices", query_string=query_string)
 
         expect(response.json).to(equal({"cost": 35}))
 
-    def test_is_monday_but_not_holiday(self) -> None:
-        query_string = {"type": "1jour", "date": "2024-04-15"}
+    def test_is_neither_holiday_and_monday(self) -> None:
+        query_string = {"type": "1jour", "date": "2019-02-15"}
         response = self.client.get("/prices", query_string=query_string)
 
-        expect(response.json).to(equal({"cost": 23}))
+        expect(response.json).to(equal({"cost": 35}))
 
     @pytest.mark.parametrize("type,cost", [("1jour", 35), ("night", 0)])
     def test_pass_without_age(self, type: str, cost: int) -> None:
