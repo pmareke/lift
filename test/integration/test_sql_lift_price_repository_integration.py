@@ -4,7 +4,7 @@ from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepos
 
 
 class TestSqlLiftPriceRepositoryIntegration:
-    def test_add_and_get_price(self) -> None:
+    def test_lift_price(self) -> None:
         sql_lift_price_repository = SqlLiftPriceRepositoryFactory.make()
         lift_pass_type = "day"
         cost = 51
@@ -13,3 +13,5 @@ class TestSqlLiftPriceRepositoryIntegration:
         expected_cost = sql_lift_price_repository.get_by_type(lift_pass_type)
 
         expect(expected_cost).to(equal(cost))
+
+        sql_lift_price_repository.delete(lift_pass_type)

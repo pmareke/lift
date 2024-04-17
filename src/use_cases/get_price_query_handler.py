@@ -30,10 +30,13 @@ class GetPriceQueryHandler:
 
         if pass_type == "night":
             return self._night_cost(age)
-        return self._jour_cost(age, date)
+        elif pass_type == "1jour":
+            return self._jour_cost(age, date)
+        else:
+            return 0
 
     def _night_cost(self, age: str | None) -> float:
-        cost = self.lift_price_repository.get_by_type("night")
+        night_cost = self.lift_price_repository.get_by_type("night")
 
         if not age:
             return 0
@@ -44,18 +47,19 @@ class GetPriceQueryHandler:
             return 0
 
         if age_value <= 64:
-            return cost
+            return night_cost
 
         # Extra reduction for seniors
-        return math.ceil(cost * 0.4)
+        return math.ceil(night_cost * 0.4)
 
     def _jour_cost(self, age: str | None, date: str | None) -> float:
         cost = self.lift_price_repository.get_by_type("1jour")
-        calculated_cost = self._calculate_cost(date, cost)
+        percentage = self._calculate_percentage(date)
+        jour_cost = math.ceil(cost * percentage)
 
         # TODO: apply reduction for others
         if not age:
-            return calculated_cost
+            return jour_cost
 
         age_value = int(age)
         if age_value < 6:
@@ -67,19 +71,19 @@ class GetPriceQueryHandler:
             return math.ceil(cost * 0.7)
 
         if age_value <= 64:
-            return calculated_cost
+            return jour_cost
 
         # Extra reduction for seniors
-        return math.ceil(calculated_cost * 0.75)
+        return math.ceil(jour_cost * 0.75)
 
-    def _calculate_cost(self, date: str | None, cost: float) -> float:
+    def _calculate_percentage(self, date: str | None) -> float:
         if not date:
-            return cost
+            return 1
 
         is_holiday = self.lift_holiday_repository.is_holiday(date)
         if self._is_monday(date) and not is_holiday:
-            return math.ceil(0.65 * cost)
-        return cost
+            return 0.65
+        return 1
 
     def _is_monday(self, date: str) -> bool:
         iso_date = datetime.fromisoformat(date)

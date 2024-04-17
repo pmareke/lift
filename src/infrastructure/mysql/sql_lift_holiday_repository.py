@@ -4,11 +4,13 @@ from src.infrastructure.mysql.connection.create_connection import create_connect
 
 
 class SqlLiftHolidayRepository:
+    TABLE_NAME = "holidays"
+
     def __init__(self, connection: Connection) -> None:
         self.cursor = connection.cursor()
 
     def is_holiday(self, date: str) -> bool:
-        statement = "SELECT 1 FROM holidays WHERE holiday  = ? "
+        statement = f"SELECT 1 FROM {self.TABLE_NAME} WHERE holiday  = ? "
         return bool(self.cursor.execute(statement, date))
 
 
