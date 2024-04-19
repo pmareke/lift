@@ -25,19 +25,17 @@ class GetPriceQueryHandler:
 
     def execute(self, query: GetPriceQuery) -> float:
         pass_type = query.liff_pass_type
-        age = query.age
-        date = query.date
-
         if pass_type == "night":
+            age = query.age
             return self._night_cost(age)
         elif pass_type == "1jour":
+            age = query.age
+            date = query.date
             return self._jour_cost(age, date)
         else:
             return 0
 
     def _night_cost(self, age: str | None) -> float:
-        night_cost = self.lift_price_repository.get_by_type("night")
-
         if not age:
             return 0
 
@@ -45,6 +43,8 @@ class GetPriceQueryHandler:
         if age_value < 6:
             # Free for kids
             return 0
+
+        night_cost = self.lift_price_repository.get_by_type("night")
 
         if age_value <= 64:
             return night_cost
