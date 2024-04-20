@@ -171,3 +171,4 @@ cython_debug/
 
 pyrightconfig.json
 poetry.lock
+.projections.json
