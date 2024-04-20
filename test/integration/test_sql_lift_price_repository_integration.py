@@ -10,7 +10,7 @@ class TestSqlLiftPriceRepositoryIntegration:
         cost = 51
 
         sql_lift_price_repository.save(lift_pass_type, cost)
-        expected_cost = sql_lift_price_repository.get_by_type(lift_pass_type)
+        expected_cost = sql_lift_price_repository.find_by_type(lift_pass_type)
 
         expect(expected_cost).to(equal(cost))
 

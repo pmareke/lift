@@ -15,6 +15,8 @@ class GetPriceQuery:
 
 
 class GetPriceQueryHandler:
+    MONDAY = 0
+
     def __init__(
         self,
         lift_price_repository: SqlLiftPriceRepository,
@@ -44,7 +46,7 @@ class GetPriceQueryHandler:
             # Free for kids
             return 0
 
-        night_cost = self.lift_price_repository.get_by_type("night")
+        night_cost = self.lift_price_repository.find_by_type("night")
 
         if age_value <= 64:
             return night_cost
@@ -53,7 +55,7 @@ class GetPriceQueryHandler:
         return math.ceil(night_cost * 0.4)
 
     def _jour_cost(self, age: str | None, date: str | None) -> float:
-        cost = self.lift_price_repository.get_by_type("1jour")
+        cost = self.lift_price_repository.find_by_type("1jour")
         percentage = self._calculate_percentage(date)
         jour_cost = math.ceil(cost * percentage)
 
@@ -87,4 +89,4 @@ class GetPriceQueryHandler:
 
     def _is_monday(self, date: str) -> bool:
         iso_date = datetime.fromisoformat(date)
-        return iso_date.weekday() == 0
+        return iso_date.weekday() == self.MONDAY
