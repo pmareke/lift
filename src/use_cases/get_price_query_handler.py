@@ -56,8 +56,8 @@ class GetPriceQueryHandler:
 
     def _jour_cost(self, age: str | None, date: str | None) -> float:
         cost = self.lift_price_repository.find_by_type("1jour")
-        percentage = self._calculate_percentage(date)
-        jour_cost = math.ceil(cost * percentage)
+        percentage_to_pay = self._calculate_percentage_to_pay(date)
+        jour_cost = math.ceil(cost * percentage_to_pay)
 
         # TODO: apply reduction for others
         if not age:
@@ -78,14 +78,14 @@ class GetPriceQueryHandler:
         # Extra reduction for seniors
         return math.ceil(jour_cost * 0.75)
 
-    def _calculate_percentage(self, date: str | None) -> float:
+    def _calculate_percentage_to_pay(self, date: str | None) -> float:
         if not date:
-            return 1
+            return 1  # 100%
 
         is_holiday = self.lift_holiday_repository.is_holiday(date)
         if self._is_monday(date) and not is_holiday:
-            return 0.65
-        return 1
+            return 0.65  # 65%
+        return 1  # 100%
 
     def _is_monday(self, date: str) -> bool:
         iso_date = datetime.fromisoformat(date)

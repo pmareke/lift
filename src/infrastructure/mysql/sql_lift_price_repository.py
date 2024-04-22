@@ -9,7 +9,7 @@ class SqlLiftPriceRepository:
     def __init__(self, connection: Connection) -> None:
         self.cursor = connection.cursor()
 
-    def save(self, lift_type: str, cost: int) -> None:
+    def save(self, lift_type: str, cost: float) -> None:
         statement = f"INSERT INTO {self.TABLE_NAME} (type, cost) VALUES (?, ?) ON DUPLICATE KEY UPDATE cost = ?"
         self.cursor.execute(statement, [lift_type, cost, cost])
 

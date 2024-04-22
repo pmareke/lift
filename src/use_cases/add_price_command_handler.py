@@ -14,9 +14,9 @@ class AddPriceCommandHandler:
         self.lift_price_repository = lift_price_repository
 
     def execute(self, command: AddPriceCommand) -> dict:
-        type = command.lift_pass_type
-        cost = int(command.cost)
+        pass_type = command.lift_pass_type
+        cost = command.cost
 
-        self.lift_price_repository.save(type, cost)
+        self.lift_price_repository.save(pass_type, cost)
 
         return {}
