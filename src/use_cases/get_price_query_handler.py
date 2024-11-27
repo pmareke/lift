@@ -1,9 +1,10 @@
 import math
-
 from dataclasses import dataclass
 from datetime import datetime
 
-from src.infrastructure.mysql.sql_lift_holiday_repository import SqlLiftHolidayRepository
+from src.infrastructure.mysql.sql_lift_holiday_repository import (
+    SqlLiftHolidayRepository,
+)
 from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepository
 
 
