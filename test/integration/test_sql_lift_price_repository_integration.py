@@ -1,6 +1,8 @@
-from expects import expect, equal
+from expects import equal, expect
 
-from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepositoryFactory
+from src.infrastructure.mysql.sql_lift_price_repository import (
+    SqlLiftPriceRepositoryFactory,
+)
 
 
 class TestSqlLiftPriceRepositoryIntegration:

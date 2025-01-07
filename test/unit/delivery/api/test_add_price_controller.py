@@ -4,7 +4,10 @@ from expects import expect, equal
 
 from src.delivery.api.add_price_controller import AddPriceController
 from src.main import app
-from src.use_cases.add_price_command_handler import AddPriceCommand, AddPriceCommandHandler
+from src.use_cases.add_price_command_handler import (
+    AddPriceCommand,
+    AddPriceCommandHandler,
+)
 
 
 class TestAddPriceController:

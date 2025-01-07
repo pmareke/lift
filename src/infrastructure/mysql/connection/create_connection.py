@@ -1,7 +1,9 @@
 from pymysql import connect
 from pymysql.connections import Connection
 
-from src.infrastructure.mysql.connection.py_mysql_cursor_wrapper import PyMySQLCursorWrapper
+from src.infrastructure.mysql.connection.py_mysql_cursor_wrapper import (
+    PyMySQLCursorWrapper,
+)
 
 
 def create_connection() -> Connection:
