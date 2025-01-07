@@ -16,8 +16,6 @@ class GetPriceQuery:
 
 
 class GetPriceQueryHandler:
-    MONDAY = 0
-
     def __init__(
         self,
         lift_price_repository: SqlLiftPriceRepository,
@@ -90,4 +88,4 @@ class GetPriceQueryHandler:
 
     def _is_monday(self, date: str) -> bool:
         iso_date = datetime.fromisoformat(date)
-        return iso_date.weekday() == self.MONDAY
+        return iso_date.weekday() == 0  # MONDAY
