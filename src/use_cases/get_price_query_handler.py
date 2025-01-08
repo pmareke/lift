@@ -5,7 +5,7 @@ from datetime import datetime
 from src.infrastructure.mysql.sql_lift_holiday_repository import (
     SqlLiftHolidayRepository,
 )
-from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepository
+from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassRepository
 
 
 @dataclass
@@ -18,10 +18,10 @@ class GetPriceQuery:
 class GetPriceQueryHandler:
     def __init__(
         self,
-        lift_price_repository: SqlLiftPriceRepository,
+        lift_pass_repository: SqlLiftPassRepository,
         lift_holiday_repository: SqlLiftHolidayRepository,
     ) -> None:
-        self.lift_price_repository = lift_price_repository
+        self.lift_pass_repository = lift_pass_repository
         self.lift_holiday_repository = lift_holiday_repository
 
     def execute(self, query: GetPriceQuery) -> float:
@@ -45,7 +45,7 @@ class GetPriceQueryHandler:
             # Free for kids
             return 0
 
-        night_cost = self.lift_price_repository.find_by_type("night")
+        night_cost = self.lift_pass_repository.find_by_type("night")
 
         if age_value <= 64:
             return night_cost
@@ -54,7 +54,7 @@ class GetPriceQueryHandler:
         return math.ceil(night_cost * 0.4)
 
     def _jour_cost(self, age: str | None, date: str | None) -> float:
-        cost = self.lift_price_repository.find_by_type("1jour")
+        cost = self.lift_pass_repository.find_by_type("1jour")
         percentage_to_pay = self._calculate_percentage_to_pay(date)
         jour_cost = math.ceil(cost * percentage_to_pay)
 

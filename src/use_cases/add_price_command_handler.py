@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.infrastructure.mysql.sql_lift_price_repository import SqlLiftPriceRepository
+from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassRepository
 
 
 @dataclass
@@ -10,13 +10,11 @@ class AddPriceCommand:
 
 
 class AddPriceCommandHandler:
-    def __init__(self, lift_price_repository: SqlLiftPriceRepository) -> None:
-        self.lift_price_repository = lift_price_repository
+    def __init__(self, lift_pass_repository: SqlLiftPassRepository) -> None:
+        self.lift_pass_repository = lift_pass_repository
 
     def execute(self, command: AddPriceCommand) -> dict:
         pass_type = command.lift_pass_type
         cost = command.cost
-
-        self.lift_price_repository.save(pass_type, cost)
-
+        self.lift_pass_repository.save(pass_type, cost)
         return {}

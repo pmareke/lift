@@ -3,7 +3,7 @@ from pymysql.connections import Connection
 from src.infrastructure.mysql.connection.create_connection import create_connection
 
 
-class SqlLiftPriceRepository:
+class SqlLiftPassRepository:
     TABLE_NAME = "base_price"
 
     def __init__(self, connection: Connection) -> None:
@@ -23,8 +23,8 @@ class SqlLiftPriceRepository:
         return float(self.cursor.fetchone()[0])
 
 
-class SqlLiftPriceRepositoryFactory:
+class SqlLiftPassRepositoryFactory:
     @staticmethod
-    def make() -> SqlLiftPriceRepository:
+    def make() -> SqlLiftPassRepository:
         connection = create_connection()
-        return SqlLiftPriceRepository(connection)
+        return SqlLiftPassRepository(connection)
