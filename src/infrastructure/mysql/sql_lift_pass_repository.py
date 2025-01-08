@@ -9,9 +9,9 @@ class SqlLiftPassRepository:
     def __init__(self, cursor: Cursor) -> None:
         self.cursor = cursor
 
-    def save(self, lift_pass_type: str, cost: float) -> None:
+    def save(self, lift_pass_type: str, base_price: float) -> None:
         statement = f"INSERT INTO {self.TABLE_NAME} (type, cost) VALUES (?, ?) ON DUPLICATE KEY UPDATE cost = ?"
-        self.cursor.execute(statement, [lift_pass_type, cost, cost])
+        self.cursor.execute(statement, [lift_pass_type, base_price, base_price])
 
     def delete(self, pass_lift_type: str) -> None:
         statement = f"DELETE FROM {self.TABLE_NAME} WHERE type = ? "

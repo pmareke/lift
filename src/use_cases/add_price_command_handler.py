@@ -6,7 +6,7 @@ from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassReposit
 @dataclass
 class AddPriceCommand:
     lift_pass_type: str
-    cost: float
+    base_price: float
 
 
 class AddPriceCommandHandler:
@@ -15,5 +15,5 @@ class AddPriceCommandHandler:
 
     def execute(self, command: AddPriceCommand) -> None:
         pass_type = command.lift_pass_type
-        cost = command.cost
-        self.lift_pass_repository.save(pass_type, cost)
+        base_price = command.base_price
+        self.lift_pass_repository.save(pass_type, base_price)
