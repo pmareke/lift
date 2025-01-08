@@ -9,17 +9,17 @@ class SqlLiftPassRepository:
     def __init__(self, connection: Connection) -> None:
         self.cursor = connection.cursor()
 
-    def save(self, lift_type: str, cost: float) -> None:
+    def save(self, lift_pass_type: str, cost: float) -> None:
         statement = f"INSERT INTO {self.TABLE_NAME} (type, cost) VALUES (?, ?) ON DUPLICATE KEY UPDATE cost = ?"
-        self.cursor.execute(statement, [lift_type, cost, cost])
+        self.cursor.execute(statement, [lift_pass_type, cost, cost])
 
-    def delete(self, lift_type: str) -> None:
+    def delete(self, pass_lift_type: str) -> None:
         statement = f"DELETE FROM {self.TABLE_NAME} WHERE type = ? "
-        self.cursor.execute(statement, lift_type)
+        self.cursor.execute(statement, pass_lift_type)
 
-    def find_base_price(self, lift_type: str) -> float:
+    def find_base_price(self, lift_pass_type: str) -> float:
         statement = f"SELECT cost FROM {self.TABLE_NAME} WHERE type = ? "
-        self.cursor.execute(statement, [lift_type])
+        self.cursor.execute(statement, [lift_pass_type])
         return float(self.cursor.fetchone()[0])
 
 
