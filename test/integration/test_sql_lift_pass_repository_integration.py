@@ -8,13 +8,13 @@ from src.infrastructure.mysql.sql_lift_pass_repository import (
 class TestSqlLiftPassRepositoryIntegration:
     def test_save_and_find_lift_pass(self) -> None:
         sql_lift_pass_repository = SqlLiftPassRepositoryFactory.make()
-        lift_pass_type = "day"
+        pass_type = "day"
         base_price = 51
 
-        sql_lift_pass_repository.save(lift_pass_type, base_price)
+        sql_lift_pass_repository.save(pass_type, base_price)
 
-        expected_base_price = sql_lift_pass_repository.find_base_price(lift_pass_type)
+        expected_base_price = sql_lift_pass_repository.find_base_price(pass_type)
 
         expect(expected_base_price).to(equal(base_price))
 
-        sql_lift_pass_repository.delete(lift_pass_type)
+        sql_lift_pass_repository.delete(pass_type)

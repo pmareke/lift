@@ -13,10 +13,10 @@ class TestAddPriceCommandHandler:
     def test_add_price_command_handler(self) -> None:
         repository = Mimic(Spy, SqlLiftPassRepository)
         base_price = 100
-        lift_pass_type = "day"
-        command = AddPriceCommand(lift_pass_type, base_price)
+        pass_type = "day"
+        command = AddPriceCommand(pass_type, base_price)
         handler = AddPriceCommandHandler(repository)
 
         handler.execute(command)
 
-        expect(repository.save).to(have_been_called_with(lift_pass_type, base_price))
+        expect(repository.save).to(have_been_called_with(pass_type, base_price))

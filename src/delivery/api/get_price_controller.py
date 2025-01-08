@@ -8,10 +8,10 @@ class GetPriceController:
         self.query_handler = query_handler
 
     def get_price(self) -> dict:
-        lift_pass_type = request.args["type"]
+        pass_type = request.args["type"]
         age = request.args.get("age")
         date = request.args.get("date")
-        query = GetPriceQuery(lift_pass_type, age, date)
+        query = GetPriceQuery(pass_type, age, date)
 
         cost = self.query_handler.execute(query)
 

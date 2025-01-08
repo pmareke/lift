@@ -13,9 +13,9 @@ class AddPriceController:
         self.command_handler = command_handler
 
     def add_price(self) -> Response:
-        lift_pass_type = request.args["type"]
+        pass_type = request.args["type"]
         base_price = float(request.args["cost"])
-        command = AddPriceCommand(lift_pass_type, base_price)
+        command = AddPriceCommand(pass_type, base_price)
 
         self.command_handler.execute(command)
 

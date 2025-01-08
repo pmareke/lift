@@ -12,10 +12,10 @@ from src.use_cases.add_price_command_handler import (
 
 class TestAddPriceController:
     def test_add_price(self) -> None:
-        lift_pass_type = "1jour"
+        pass_type = "1jour"
         cost = 100
-        expected_response = {"type": lift_pass_type, "cost": cost}
-        command = AddPriceCommand(lift_pass_type, cost)
+        expected_response = {"type": pass_type, "cost": cost}
+        command = AddPriceCommand(pass_type, cost)
         with Mimic(Spy, AddPriceCommandHandler) as command_handler:
             command_handler.execute(command).returns(expected_response)
         add_price_controller = AddPriceController(command_handler)  # type: ignore
