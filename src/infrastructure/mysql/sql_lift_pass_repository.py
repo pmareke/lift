@@ -1,4 +1,4 @@
-from pymysql.connections import Connection
+from pymysql.cursors import Cursor
 
 from src.infrastructure.mysql.connection.create_connection import create_connection
 
@@ -6,8 +6,8 @@ from src.infrastructure.mysql.connection.create_connection import create_connect
 class SqlLiftPassRepository:
     TABLE_NAME = "base_price"
 
-    def __init__(self, connection: Connection) -> None:
-        self.cursor = connection.cursor()
+    def __init__(self, cursor: Cursor) -> None:
+        self.cursor = cursor
 
     def save(self, lift_pass_type: str, cost: float) -> None:
         statement = f"INSERT INTO {self.TABLE_NAME} (type, cost) VALUES (?, ?) ON DUPLICATE KEY UPDATE cost = ?"
@@ -20,11 +20,15 @@ class SqlLiftPassRepository:
     def find_base_price(self, lift_pass_type: str) -> float:
         statement = f"SELECT cost FROM {self.TABLE_NAME} WHERE type = ? "
         self.cursor.execute(statement, [lift_pass_type])
-        return float(self.cursor.fetchone()[0])
+        result = self.cursor.fetchone()
+        if not result:
+            raise Exception(f"Base price for {lift_pass_type} not found")
+        return float(result[0])
 
 
 class SqlLiftPassRepositoryFactory:
     @staticmethod
     def make() -> SqlLiftPassRepository:
         connection = create_connection()
-        return SqlLiftPassRepository(connection)
+        cursor = connection.cursor()
+        return SqlLiftPassRepository(cursor)
