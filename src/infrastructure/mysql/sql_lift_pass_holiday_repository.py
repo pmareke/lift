@@ -3,7 +3,7 @@ from pymysql.connections import Connection
 from src.infrastructure.mysql.connection.create_connection import create_connection
 
 
-class SqlLiftHolidayRepository:
+class SqlLiftPassHolidayRepository:
     TABLE_NAME = "holidays"
 
     def __init__(self, connection: Connection) -> None:
@@ -14,8 +14,8 @@ class SqlLiftHolidayRepository:
         return bool(self.cursor.execute(statement, date))
 
 
-class SqlLiftHolidayRepositoryFactory:
+class SqlLiftPassHolidayRepositoryFactory:
     @staticmethod
-    def make() -> SqlLiftHolidayRepository:
+    def make() -> SqlLiftPassHolidayRepository:
         connection = create_connection()
-        return SqlLiftHolidayRepository(connection)
+        return SqlLiftPassHolidayRepository(connection)

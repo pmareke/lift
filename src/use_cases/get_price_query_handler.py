@@ -2,8 +2,8 @@ import math
 from dataclasses import dataclass
 from datetime import datetime
 
-from src.infrastructure.mysql.sql_lift_holiday_repository import (
-    SqlLiftHolidayRepository,
+from src.infrastructure.mysql.sql_lift_pass_holiday_repository import (
+    SqlLiftPassHolidayRepository,
 )
 from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassRepository
 
@@ -19,10 +19,10 @@ class GetPriceQueryHandler:
     def __init__(
         self,
         lift_pass_repository: SqlLiftPassRepository,
-        lift_holiday_repository: SqlLiftHolidayRepository,
+        lift_pass_holiday_repository: SqlLiftPassHolidayRepository,
     ) -> None:
         self.lift_pass_repository = lift_pass_repository
-        self.lift_holiday_repository = lift_holiday_repository
+        self.lift_pass_holiday_repository = lift_pass_holiday_repository
 
     def execute(self, query: GetPriceQuery) -> float:
         pass_type = query.liff_pass_type
@@ -82,7 +82,7 @@ class GetPriceQueryHandler:
         if not date:
             return 1  # 100%
 
-        is_holiday = self.lift_holiday_repository.is_holiday(date)
+        is_holiday = self.lift_pass_holiday_repository.is_holiday(date)
         if self._is_monday(date) and not is_holiday:
             return 0.65  # 65%
         return 1  # 100%
