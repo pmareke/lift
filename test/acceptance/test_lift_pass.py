@@ -1,7 +1,7 @@
-import pytest
+from http.client import CREATED
 
-from expects import expect, equal
-from http.client import OK
+import pytest
+from expects import equal, expect
 
 from src.main import app
 
@@ -14,7 +14,7 @@ class TestLiftPass:
         query_string = {"type": "1jour", "cost": 35}
         response = self.client.put("/prices", query_string=query_string)
 
-        expect(response.status_code).to(equal(OK))
+        expect(response.status_code).to(equal(CREATED))
 
     @pytest.mark.parametrize("type", ["1jour", "night"])
     def test_people_under_6_does_not_pay(self, type: str) -> None:

@@ -1,6 +1,6 @@
 from doublex import Mimic, Spy
 from doublex_expects import have_been_called_with
-from expects import expect, equal
+from expects import equal, expect
 
 from src.delivery.api.add_price_controller import AddPriceController
 from src.main import app
@@ -21,7 +21,6 @@ class TestAddPriceController:
         add_price_controller = AddPriceController(command_handler)  # type: ignore
 
         with app.test_request_context(query_string=expected_response):
-            response = add_price_controller.add_price()
+            add_price_controller.add_price()
 
         expect(command_handler.execute).to(have_been_called_with(command))
-        expect(response).to(equal(expected_response))

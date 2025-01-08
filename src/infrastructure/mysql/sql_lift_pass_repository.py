@@ -17,7 +17,7 @@ class SqlLiftPassRepository:
         statement = f"DELETE FROM {self.TABLE_NAME} WHERE type = ? "
         self.cursor.execute(statement, lift_type)
 
-    def find_by_type(self, lift_type: str) -> float:
+    def find_base_price(self, lift_type: str) -> float:
         statement = f"SELECT cost FROM {self.TABLE_NAME} WHERE type = ? "
         self.cursor.execute(statement, [lift_type])
         return float(self.cursor.fetchone()[0])
