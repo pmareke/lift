@@ -24,4 +24,4 @@ class TestGetPriceController:
             response = get_price_controller.get_price()
 
         expect(query_handler.execute).to(have_been_called_with(query))
-        expect(response).to(equal(expected_response))
+        expect(response.json).to(equal(expected_response))

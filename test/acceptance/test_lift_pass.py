@@ -67,3 +67,9 @@ class TestLiftPass:
         response = self.client.get("/prices", query_string=query_string)
 
         expect(response.json).to(equal({"cost": expected_cost}))
+
+    def test_not_existing_lift_pass_type(self) -> None:
+        query_string = {"type": "non-existing-type"}
+        response = self.client.get("/prices", query_string=query_string)
+
+        expect(response.json).to(equal({"cost": 0}))
