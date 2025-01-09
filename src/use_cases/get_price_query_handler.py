@@ -68,22 +68,23 @@ class GetPriceQueryHandler:
 
         if age_value < 15:
             # Extra reduction for children
-            return math.ceil(base_price * 0.7)
+            return math.ceil(base_price * 0.7)  # 70% - 30% reduction
 
         if age_value <= 64:
             return cost
 
         # Extra reduction for seniors
-        return math.ceil(cost * 0.75)
+        return math.ceil(cost * 0.75)  # 75% - 25% reduction
 
     def _calculate_percentage_to_pay(self, date: str | None) -> float:
         if not date:
-            return 1  # 100%
+            return 1  # 100% - No reduction
 
         is_holiday = self.lift_pass_holiday_repository.is_holiday(date)
         if self._is_monday(date) and not is_holiday:
-            return 0.65  # 65%
-        return 1  # 100%
+            return 0.65  # 65% - 35% reduction
+
+        return 1  # 100% - No reduction
 
     def _is_monday(self, date: str) -> bool:
         iso_date = datetime.fromisoformat(date)
