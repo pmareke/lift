@@ -8,8 +8,8 @@ from src.infrastructure.mysql.sql_lift_pass_repository import (
 class TestSqlLiftPassRepositoryIntegration:
     def test_save_and_find_lift_pass(self) -> None:
         sql_lift_pass_repository = SqlLiftPassRepositoryFactory.make()
-        pass_type = "day"
-        base_price = 51
+        pass_type = "night"
+        base_price = 10
 
         sql_lift_pass_repository.save(pass_type, base_price)
 
