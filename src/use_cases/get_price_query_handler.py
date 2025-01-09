@@ -33,7 +33,7 @@ class GetPriceQueryHandler:
         if pass_type == "1jour":
             return self._jour_cost(query)
 
-        return 0
+        return 0  # Not existing pass type
 
     def _night_cost(self, query: GetPriceQuery) -> float:
         if not query.age:
