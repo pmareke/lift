@@ -50,8 +50,7 @@ class GetPriceQueryHandler:
             return base_price
 
         # Extra reduction for seniors
-        cost = math.ceil(base_price * 0.4)
-        return cost
+        return math.ceil(base_price * 0.4)
 
     def _jour_cost(self, query: GetPriceQuery) -> float:
         base_price = self.lift_pass_repository.find_base_price("1jour")
