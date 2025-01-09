@@ -28,21 +28,18 @@ class GetPriceQueryHandler:
         pass_type = query.liff_pass_type
 
         if pass_type == "night":
-            age = query.age
-            return self._night_cost(age)
+            return self._night_cost(query)
 
         if pass_type == "1jour":
-            age = query.age
-            date = query.date
-            return self._jour_cost(age, date)
+            return self._jour_cost(query)
 
         return 0
 
-    def _night_cost(self, age: str | None) -> float:
-        if not age:
+    def _night_cost(self, query: GetPriceQuery) -> float:
+        if not query.age:
             return 0
 
-        age_value = int(age)
+        age_value = int(query.age)
         if age_value < 6:
             # Free for kids
             return 0
@@ -56,16 +53,16 @@ class GetPriceQueryHandler:
         cost = math.ceil(base_price * 0.4)
         return cost
 
-    def _jour_cost(self, age: str | None, date: str | None) -> float:
+    def _jour_cost(self, query: GetPriceQuery) -> float:
         base_price = self.lift_pass_repository.find_base_price("1jour")
-        percentage_to_pay = self._calculate_percentage_to_pay(date)
+        percentage_to_pay = self._calculate_percentage_to_pay(query.date)
         cost = math.ceil(base_price * percentage_to_pay)
 
         # TODO: apply reduction for others
-        if not age:
+        if not query.age:
             return cost
 
-        age_value = int(age)
+        age_value = int(query.age)
         if age_value < 6:
             # Free for kids
             return 0
