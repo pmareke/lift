@@ -12,9 +12,10 @@ class TestSqlLiftPassRepositoryIntegration:
         base_price = 10
 
         sql_lift_pass_repository.save(pass_type, base_price)
-
         expected_base_price = sql_lift_pass_repository.find_base_price(pass_type)
 
         expect(expected_base_price).to(equal(base_price))
 
-        sql_lift_pass_repository.delete(pass_type)
+    def teardown_method(self) -> None:
+        sql_lift_pass_repository = SqlLiftPassRepositoryFactory.make()
+        sql_lift_pass_repository.delete("night")
