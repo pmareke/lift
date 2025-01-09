@@ -1,4 +1,4 @@
-from doublex import ANY_ARG, Mimic, Spy, Stub
+from doublex import Mimic, Spy, Stub
 from doublex_expects import have_been_called_with
 from expects import equal, expect
 
@@ -10,7 +10,7 @@ from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHa
 
 
 class TestGetPriceQueryHandler:
-    def test_get_night(self) -> None:
+    def test_get_night_price(self) -> None:
         holiday_repository = Mimic(Spy, SqlLiftPassHolidayRepository)
         with Mimic(Stub, SqlLiftPassRepository) as lift_pass_repository:
             lift_pass_repository.find_base_price("night").returns(50)
@@ -22,7 +22,7 @@ class TestGetPriceQueryHandler:
         expect(cost).to(equal(50))
         expect(holiday_repository.is_holiday).not_to(have_been_called_with("2021-12-25"))
 
-    def test_get_one_jour(self) -> None:
+    def test_get_one_jour_price(self) -> None:
         with Mimic(Stub, SqlLiftPassRepository) as lift_pass_repository:
             lift_pass_repository.find_base_price("1jour").returns(50)
         with Mimic(Stub, SqlLiftPassHolidayRepository) as holiday_repository:
