@@ -2,6 +2,7 @@ from http.client import CREATED
 
 from flask import Response, request
 
+from src.domain.lift_pass_type import LiftPassType
 from src.use_cases.add_price_command_handler import (
     AddPriceCommand,
     AddPriceCommandHandler,
@@ -13,7 +14,7 @@ class AddPriceController:
         self.command_handler = command_handler
 
     def add_price(self) -> Response:
-        pass_type = request.args["type"]
+        pass_type = LiftPassType(request.args["type"])
         base_price = float(request.args["cost"])
         command = AddPriceCommand(pass_type, base_price)
 

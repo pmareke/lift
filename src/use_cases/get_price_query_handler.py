@@ -11,7 +11,7 @@ from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassReposit
 
 @dataclass
 class GetPriceQuery:
-    liff_pass_type: str
+    liff_pass_type: LiftPassType
     age: str | None = None
     date: str | None = None
 
@@ -28,13 +28,10 @@ class GetPriceQueryHandler:
     def execute(self, query: GetPriceQuery) -> float:
         pass_type = query.liff_pass_type
 
-        if pass_type == "night":
+        if pass_type == LiftPassType.NIGHT:
             return self._night_cost(query)
 
-        if pass_type == "1jour":
-            return self._1jour_cost(query)
-
-        return 0  # Not existing pass type
+        return self._1jour_cost(query)
 
     def _night_cost(self, query: GetPriceQuery) -> float:
         if not query.age:

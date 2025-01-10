@@ -1,8 +1,9 @@
 from doublex import Mimic, Spy
 from doublex_expects import have_been_called_with
-from expects import equal, expect
+from expects import expect
 
 from src.delivery.api.add_price_controller import AddPriceController
+from src.domain.lift_pass_type import LiftPassType
 from src.main import app
 from src.use_cases.add_price_command_handler import (
     AddPriceCommand,
@@ -12,9 +13,9 @@ from src.use_cases.add_price_command_handler import (
 
 class TestAddPriceController:
     def test_add_price(self) -> None:
-        pass_type = "1jour"
+        pass_type = LiftPassType.ONE_JOUR
         cost = 100
-        expected_response = {"type": pass_type, "cost": cost}
+        expected_response = {"type": pass_type.value, "cost": cost}
         command = AddPriceCommand(pass_type, cost)
         with Mimic(Spy, AddPriceCommandHandler) as command_handler:
             command_handler.execute(command).returns(expected_response)

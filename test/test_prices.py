@@ -1,9 +1,9 @@
 import multiprocessing
+import time
+from typing import Generator
+
 import pytest
 import requests
-import time
-
-from typing import Generator
 
 from src.main import app
 

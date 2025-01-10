@@ -19,7 +19,7 @@ class TestGetPriceQueryHandler:
         holiday_repository = Mimic(Spy, SqlLiftPassHolidayRepository)
         with Mimic(Stub, SqlLiftPassRepository) as lift_pass_repository:
             lift_pass_repository.find_by(pass_type).returns(lift_pass)
-        query = GetPriceQuery(pass_type.value, age="20", date="2021-12-25")
+        query = GetPriceQuery(pass_type, age="20", date="2021-12-25")
         handler = GetPriceQueryHandler(lift_pass_repository, holiday_repository)
 
         cost = handler.execute(query)
@@ -35,7 +35,7 @@ class TestGetPriceQueryHandler:
             lift_pass_repository.find_by(pass_type).returns(lift_pass)
         with Mimic(Stub, SqlLiftPassHolidayRepository) as holiday_repository:
             holiday_repository.is_holiday("2021-12-25").returns(True)
-        query = GetPriceQuery(pass_type.value, age="20", date="2021-12-25")
+        query = GetPriceQuery(pass_type, age="20", date="2021-12-25")
         handler = GetPriceQueryHandler(lift_pass_repository, holiday_repository)
 
         cost = handler.execute(query)

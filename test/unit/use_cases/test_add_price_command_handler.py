@@ -17,7 +17,7 @@ class TestAddPriceCommandHandler:
         base_price = 100
         pass_type = LiftPassType.NIGHT
         lift_pass = LiftPass(pass_type, base_price)
-        command = AddPriceCommand(pass_type.value, base_price)
+        command = AddPriceCommand(pass_type, base_price)
         handler = AddPriceCommandHandler(repository)
 
         handler.execute(command)
