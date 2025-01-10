@@ -2,6 +2,7 @@ import math
 from dataclasses import dataclass
 from datetime import datetime
 
+from src.domain.lift_pass_type import LiftPassType
 from src.infrastructure.mysql.sql_lift_pass_holiday_repository import (
     SqlLiftPassHolidayRepository,
 )
@@ -31,7 +32,7 @@ class GetPriceQueryHandler:
             return self._night_cost(query)
 
         if pass_type == "1jour":
-            return self._jour_cost(query)
+            return self._1jour_cost(query)
 
         return 0  # Not existing pass type
 
@@ -44,18 +45,18 @@ class GetPriceQueryHandler:
             # Free for kids
             return 0
 
-        base_price = self.lift_pass_repository.find_base_price("night")
+        lift_pass = self.lift_pass_repository.find_by(LiftPassType.NIGHT)
 
         if age_value <= 64:
-            return base_price
+            return lift_pass.base_price
 
         # Extra reduction for seniors
-        return math.ceil(base_price * 0.4)
+        return math.ceil(lift_pass.base_price * 0.4)
 
-    def _jour_cost(self, query: GetPriceQuery) -> float:
-        base_price = self.lift_pass_repository.find_base_price("1jour")
+    def _1jour_cost(self, query: GetPriceQuery) -> float:
+        lift_pass = self.lift_pass_repository.find_by(LiftPassType.ONE_JOUR)
         percentage_to_pay = self._calculate_percentage_to_pay(query.date)
-        cost = math.ceil(base_price * percentage_to_pay)
+        cost = math.ceil(lift_pass.base_price * percentage_to_pay)
 
         # TODO: apply reduction for others
         if not query.age:
@@ -68,7 +69,7 @@ class GetPriceQueryHandler:
 
         if age_value < 15:
             # Extra reduction for children
-            return math.ceil(base_price * 0.7)  # 70% - 30% reduction
+            return math.ceil(lift_pass.base_price * 0.7)  # 70% - 30% reduction
 
         if age_value <= 64:
             return cost

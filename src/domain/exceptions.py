@@ -1,0 +1,2 @@
+class LiftPassTypeNotFoundException(Exception):
+    pass
