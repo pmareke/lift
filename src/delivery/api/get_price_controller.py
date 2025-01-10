@@ -11,7 +11,11 @@ class GetPriceController:
         self.query_handler = query_handler
 
     def get_price(self) -> Response:
-        pass_type = LiftPassType(request.args["type"])
+        try:
+            pass_type = LiftPassType(request.args["type"])
+        except ValueError:
+            return make_response({"cost": 0}, OK)
+
         age = request.args.get("age")
         date = request.args.get("date")
         query = GetPriceQuery(pass_type, age, date)
