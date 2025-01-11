@@ -3,12 +3,22 @@ from datetime import datetime
 
 from src.domain.lift_pass_cost import LiftPassCost
 from src.domain.lift_pass_type import LiftPassType
+from src.infrastructure.mysql.sql_lift_pass_holiday_repository import (
+    SqlLiftPassHolidayRepository,
+)
+from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassRepository
 
 
 class OneJourLiftPassCost(LiftPassCost):
     PASS_TYPE = LiftPassType.ONE_JOUR
 
-    def __init__(self, pass_repository, holiday_repository, age: str | None, date: str | None):
+    def __init__(
+        self,
+        pass_repository: SqlLiftPassRepository,
+        holiday_repository: SqlLiftPassHolidayRepository,
+        age: str | None,
+        date: str | None,
+    ) -> None:
         self.pass_repository = pass_repository
         self.holiday_repository = holiday_repository
         self.age = age

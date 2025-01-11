@@ -3,5 +3,5 @@ from abc import ABC, abstractmethod
 
 class LiftPassCost(ABC):
     @abstractmethod
-    def cost(self, *args, **kwargs) -> float:
+    def cost(self, *args, **kwargs) -> float:  # type: ignore
         raise NotImplementedError
