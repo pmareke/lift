@@ -33,7 +33,7 @@ class GetPriceQueryHandler:
         if pass_type == LiftPassType.NIGHT:
             return self._night_cost(age)
 
-        return self._1jour_cost(age, date)
+        return self._one_jour_cost(age, date)
 
     def _night_cost(self, age: str | None) -> float:
         if not age:
@@ -52,7 +52,7 @@ class GetPriceQueryHandler:
         # Extra reduction for seniors
         return math.ceil(lift_pass.base_price * 0.4)
 
-    def _1jour_cost(self, age: str | None, date: str | None) -> float:
+    def _one_jour_cost(self, age: str | None, date: str | None) -> float:
         lift_pass = self.lift_pass_repository.find_by(LiftPassType.ONE_JOUR)
         percentage_to_pay = self._calculate_percentage_to_pay(date)
         cost = math.ceil(lift_pass.base_price * percentage_to_pay)
