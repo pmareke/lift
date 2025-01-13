@@ -87,11 +87,11 @@ class GetPriceQueryHandler:
             return 1
 
         is_holiday = self.holiday_repository.is_holiday(date)
-        # 35% reduction on Mondays if it's not a holiday
+        # 35% discount on Mondays if it's not a holiday
         if self._is_monday(date) and not is_holiday:
             return 0.65
 
-        # No reduction
+        # No discount
         return 1
 
     def _is_monday(self, date: str) -> bool:
