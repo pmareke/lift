@@ -2,11 +2,9 @@ import math
 from dataclasses import dataclass
 from datetime import datetime
 
+from src.domain.lift_pass_holiday_repository import LiftPassHolidayRepository
+from src.domain.lift_pass_repository import LiftPassRepository
 from src.domain.lift_pass_type import LiftPassType
-from src.infrastructure.mysql.sql_lift_pass_holiday_repository import (
-    SqlLiftPassHolidayRepository,
-)
-from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassRepository
 
 
 @dataclass
@@ -19,11 +17,11 @@ class GetPriceQuery:
 class GetPriceQueryHandler:
     def __init__(
         self,
-        lift_pass_repository: SqlLiftPassRepository,
-        lift_pass_holiday_repository: SqlLiftPassHolidayRepository,
+        pass_repository: LiftPassRepository,
+        holiday_repository: LiftPassHolidayRepository,
     ) -> None:
-        self.lift_pass_repository = lift_pass_repository
-        self.lift_pass_holiday_repository = lift_pass_holiday_repository
+        self.pass_repository = pass_repository
+        self.holiday_repository = holiday_repository
 
     def execute(self, query: GetPriceQuery) -> float:
         pass_type = query.pass_type
@@ -45,7 +43,7 @@ class GetPriceQueryHandler:
         if age_value < 6:
             return 0
 
-        lift_pass = self.lift_pass_repository.find_by(LiftPassType.NIGHT)
+        lift_pass = self.pass_repository.find_by(LiftPassType.NIGHT)
         base_price = lift_pass.base_price
 
         # Without discount for adults under 65
@@ -56,7 +54,7 @@ class GetPriceQueryHandler:
         return math.ceil(base_price * 0.4)
 
     def _one_jour_lift_pass_cost(self, age: str | None, date: str | None) -> float:
-        lift_pass = self.lift_pass_repository.find_by(LiftPassType.ONE_JOUR)
+        lift_pass = self.pass_repository.find_by(LiftPassType.ONE_JOUR)
         base_price = lift_pass.base_price
 
         # Base reduction for everyone based on the date
@@ -87,7 +85,7 @@ class GetPriceQueryHandler:
         if not date:
             return 1  # 100% - No reduction
 
-        is_holiday = self.lift_pass_holiday_repository.is_holiday(date)
+        is_holiday = self.holiday_repository.is_holiday(date)
         if self._is_monday(date) and not is_holiday:
             return 0.65  # 65% - 35% reduction
 

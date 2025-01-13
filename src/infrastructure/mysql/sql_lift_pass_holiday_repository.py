@@ -1,9 +1,10 @@
 from pymysql.connections import Connection
 
+from src.domain.lift_pass_holiday_repository import LiftPassHolidayRepository
 from src.infrastructure.mysql.connection.create_connection import create_connection
 
 
-class SqlLiftPassHolidayRepository:
+class SqlLiftPassHolidayRepository(LiftPassHolidayRepository):
     TABLE_NAME = "holidays"
 
     def __init__(self, connection: Connection) -> None:

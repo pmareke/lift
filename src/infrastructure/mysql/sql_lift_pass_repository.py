@@ -2,11 +2,12 @@ from pymysql.cursors import Cursor
 
 from src.domain.exceptions import LiftPassTypeNotFoundException
 from src.domain.lift_pass import LiftPass
+from src.domain.lift_pass_repository import LiftPassRepository
 from src.domain.lift_pass_type import LiftPassType
 from src.infrastructure.mysql.connection.create_connection import create_connection
 
 
-class SqlLiftPassRepository:
+class SqlLiftPassRepository(LiftPassRepository):
     TABLE_NAME = "base_price"
 
     def __init__(self, cursor: Cursor) -> None:
