@@ -16,7 +16,5 @@ class AddPriceCommandHandler:
         self.lift_pass_repository = lift_pass_repository
 
     def execute(self, command: AddPriceCommand) -> None:
-        pass_type = command.pass_type
-        base_price = command.base_price
-        lift_pass = LiftPass(pass_type, base_price)
+        lift_pass = LiftPass(command.pass_type, command.base_price)
         self.lift_pass_repository.save(lift_pass)
