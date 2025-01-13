@@ -34,23 +34,23 @@ class GetPriceQueryHandler:
         return self._one_jour_lift_pass_cost(age, date)
 
     def _night_lift_pass_cost(self, age: str | None) -> float:
-        # Free without age
+        # Free cost without age
         if not age:
             return 0
 
         age_value = int(age)
-        # Free for kids
+        # Free cost for kids
         if age_value < 6:
             return 0
 
         lift_pass = self.pass_repository.find_by(LiftPassType.NIGHT)
         base_price = lift_pass.base_price
 
-        # Without discount for adults under 65
+        # No discount for adults under 65
         if age_value <= 64:
             return base_price
 
-        # Extra 60% reduction for seniors above 65
+        # 60% discount for seniors over 65
         return math.ceil(base_price * 0.4)
 
     def _one_jour_lift_pass_cost(self, age: str | None, date: str | None) -> float:
@@ -61,12 +61,12 @@ class GetPriceQueryHandler:
         percentage_to_pay = self._calculate_percentage_to_pay(date)
         cost = math.ceil(base_price * percentage_to_pay)
 
-        # No extra reduction without age
+        # No extra discount without age
         if not age:
             return cost
 
         age_value = int(age)
-        # Free for kids under 6
+        # Free cost for kids under 6
         if age_value < 6:
             return 0
 
@@ -82,14 +82,17 @@ class GetPriceQueryHandler:
         return math.ceil(cost * 0.75)
 
     def _calculate_percentage_to_pay(self, date: str | None) -> float:
+        # No discount without date
         if not date:
-            return 1  # 100% - No reduction
+            return 1
 
         is_holiday = self.holiday_repository.is_holiday(date)
+        # 35% reduction on Mondays if it's not a holiday
         if self._is_monday(date) and not is_holiday:
-            return 0.65  # 65% - 35% reduction
+            return 0.65
 
-        return 1  # 100% - No reduction
+        # No reduction
+        return 1
 
     def _is_monday(self, date: str) -> bool:
         iso_date = datetime.fromisoformat(date)
