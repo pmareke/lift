@@ -34,12 +34,12 @@ class GetPriceQueryHandler:
         return self._one_jour_lift_pass_cost(age, date)
 
     def _night_lift_pass_cost(self, age: str | None) -> float:
-        # Free cost without age
+        # Zero cost without age
         if not age:
             return 0
 
         age_value = int(age)
-        # Free cost for kids
+        # Zero cost for kids
         if age_value < 6:
             return 0
 
@@ -66,7 +66,7 @@ class GetPriceQueryHandler:
             return cost
 
         age_value = int(age)
-        # Free cost for kids under 6
+        # Zero cost for kids under 6
         if age_value < 6:
             return 0
 
