@@ -30,7 +30,7 @@ class GetPriceQueryHandler:
         age = query.age
         date = query.date
 
-        if pass_type == LiftPassType.NIGHT:
+        if pass_type.is_night:
             return self._night_cost(age)
 
         return self._one_jour_cost(age, date)
