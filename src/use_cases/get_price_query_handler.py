@@ -36,44 +36,49 @@ class GetPriceQueryHandler:
         return self._one_jour_lift_pass_cost(age, date)
 
     def _night_lift_pass_cost(self, age: str | None) -> float:
+        # Free without age
         if not age:
             return 0
 
         age_value = int(age)
+        # Free for kids
         if age_value < 6:
-            # Free for kids
             return 0
 
         lift_pass = self.lift_pass_repository.find_by(LiftPassType.NIGHT)
 
+        # Without discount for adults under 65
         if age_value <= 64:
             return lift_pass.base_price
 
-        # Extra reduction for seniors
+        # Extra 60% reduction for seniors above 65
         return math.ceil(lift_pass.base_price * 0.4)
 
     def _one_jour_lift_pass_cost(self, age: str | None, date: str | None) -> float:
         lift_pass = self.lift_pass_repository.find_by(LiftPassType.ONE_JOUR)
+
+        # Base reduction for everyone based on the date
         percentage_to_pay = self._calculate_percentage_to_pay(date)
         cost = math.ceil(lift_pass.base_price * percentage_to_pay)
 
-        # TODO: apply reduction for others
+        # No extra reduction without age
         if not age:
             return cost
 
         age_value = int(age)
+        # Free for kids under 6
         if age_value < 6:
-            # Free for kids
             return 0
 
+        # Extra 30% reduction for children above 6 and under 15
         if age_value < 15:
-            # Extra reduction for children
             return math.ceil(lift_pass.base_price * 0.7)  # 70% - 30% reduction
 
+        # No extra reduction for adults above 15 and under 65
         if age_value <= 64:
             return cost
 
-        # Extra reduction for seniors
+        # Extra 25% reduction for seniors
         return math.ceil(cost * 0.75)  # 75% - 25% reduction
 
     def _calculate_percentage_to_pay(self, date: str | None) -> float:
