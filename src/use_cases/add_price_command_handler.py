@@ -12,9 +12,9 @@ class AddPriceCommand:
 
 
 class AddPriceCommandHandler:
-    def __init__(self, lift_pass_repository: SqlLiftPassRepository) -> None:
-        self.lift_pass_repository = lift_pass_repository
+    def __init__(self, pass_repository: SqlLiftPassRepository) -> None:
+        self.pass_repository = pass_repository
 
     def execute(self, command: AddPriceCommand) -> None:
         lift_pass = LiftPass(command.pass_type, command.base_price)
-        self.lift_pass_repository.save(lift_pass)
+        self.pass_repository.save(lift_pass)
