@@ -25,5 +25,9 @@ get_price_controller = GetPriceController(query_handler)
 app.route("/prices", methods=["GET"])(get_price_controller.get_price)
 
 
-def __main__() -> None:
+def main() -> None:
     app.run(port=3005)
+
+
+if __name__ == "__main__":
+    main()
