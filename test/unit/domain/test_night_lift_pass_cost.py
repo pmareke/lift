@@ -8,7 +8,7 @@ from src.infrastructure.mysql.sql_lift_pass_repository import SqlLiftPassReposit
 
 
 class TestNightLiftPassCost:
-    def test_without_date(self) -> None:
+    def test_without_age(self) -> None:
         pass_repository = Stub()
         night_pass = NightLiftPassCost(pass_repository)
 

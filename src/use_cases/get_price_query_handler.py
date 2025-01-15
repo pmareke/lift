@@ -24,10 +24,10 @@ class GetPriceQueryHandler:
         self.holiday_repository = holiday_repository
 
     def execute(self, query: GetPriceQuery) -> float:
-        lift_pass_cost = self._generate_lift_access_cost(query)
+        lift_pass_cost = self._generate_lift_pass_cost(query)
         return lift_pass_cost.calculate()
 
-    def _generate_lift_access_cost(self, query: GetPriceQuery) -> LiftPassCost:
+    def _generate_lift_pass_cost(self, query: GetPriceQuery) -> LiftPassCost:
         pass_type = query.pass_type
         age = query.age
         date = query.date
