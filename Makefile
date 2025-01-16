@@ -9,6 +9,10 @@ help:  ## Show this help.
 build: ## Build the docker image
 	docker compose build
 
+.PHONY: up
+up: build ## Runs the app
+	docker compose run --rm --remove-orphans --service-ports lift
+
 .PHONY: add-package
 add-package: ## Add package to the project ex: make add-package package=XX
 	docker compose run --rm --no-deps lift poetry add $(package)

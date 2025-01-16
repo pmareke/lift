@@ -7,7 +7,7 @@ import requests
 
 from src.main import app
 
-TEST_PORT = 3006
+TEST_PORT = 5000
 
 
 def server(port: int) -> None:

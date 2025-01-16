@@ -2,9 +2,9 @@ services:
   lift:
     build: .
     ports:
-      - "3006:3006"
+      - '5000:5000'
     volumes:
-      - ".:/opt/lift/src"
+      - '.:/opt/lift/src'
     entrypoint: []
     depends_on:
       mariadb:

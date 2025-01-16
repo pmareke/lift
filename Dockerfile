@@ -20,4 +20,6 @@ COPY --chown=lift . .
 
 USER lift
 
-CMD ["python", "-m", "src/main.py"]
+EXPOSE 5000
+
+CMD ["flask","--app", "src.main", "run", "--host", "0.0.0.0", "--port", "5000"]
