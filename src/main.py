@@ -13,15 +13,15 @@ from src.use_cases.get_price_query_handler import GetPriceQueryHandler
 
 app = Flask("lift-pass-pricing")
 
-lift_pass_repository = SqlLiftPassRepositoryFactory.make()
-lift_pass_holiday_repository = SqlLiftPassHolidayRepositoryFactory.make()
+pass_repository = SqlLiftPassRepositoryFactory.make()
+holiday_repository = SqlLiftPassHolidayRepositoryFactory.make()
 
-command_handler = AddPriceCommandHandler(lift_pass_repository)
-add_price_controller = AddPriceController(command_handler)
+add_price_command_handler = AddPriceCommandHandler(pass_repository)
+add_price_controller = AddPriceController(add_price_command_handler)
 app.route("/prices", methods=["PUT"])(add_price_controller.add_price)
 
-query_handler = GetPriceQueryHandler(lift_pass_repository, lift_pass_holiday_repository)
-get_price_controller = GetPriceController(query_handler)
+get_price_query_handler = GetPriceQueryHandler(pass_repository, holiday_repository)
+get_price_controller = GetPriceController(get_price_query_handler)
 app.route("/prices", methods=["GET"])(get_price_controller.get_price)
 
 
