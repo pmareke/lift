@@ -7,13 +7,13 @@
 ![Image logo](./mountain-snow.jpg)
 
 This application solves the problem of calculating the pricing for ski lift passes.
-There's some intricate logic linked to what kind of lift pass you want, your age
-and the specific date at which you'd like to ski. There's a new feature request,
-be able to get the price for several lift passes, not just one. Currently the pricing
-for a single lift pass is implemented, unfortunately the code as it is designed
-is ***not reusable***.
-You could put some high level tests in place in order to do ***preparatory refactoring***
-so that the new feature requires minimum effort to implement.
+There's some intricate logic linked to what kind of lift pass you want, your age and the specific date at which you'd like to ski. 
+
+***There's a new feature request, be able to get the price for several lift passes, not just one.***
+
+Currently the pricing for a single lift pass is implemented, unfortunately the code as it is designed is ***not reusable***.
+
+You could put some high level tests in place in order to do ***preparatory refactoring*** so that the new feature requires minimum effort to implement.
 
 This kata models a common problem - code that makes no sense to unit test due to bad design.
 
