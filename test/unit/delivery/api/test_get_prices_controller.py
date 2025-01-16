@@ -16,13 +16,14 @@ class TestGetPricesController:
         cost = 100
         price = LiftPassPrice(pass_type, age, date)
         query = GetPricesQuery([price])
-        expected_response = {"prices": [{"pass_type": pass_type.value, "cost": 100}]}
-        payload = {"prices": [{"type": pass_type.value, "age": age, "date": date}]}
+        prices = [{"pass_type": pass_type.value, "cost": cost}]
         with Mimic(Spy, GetPricesQueryHandler) as query_handler:
-            query_handler.execute(query).returns([{"pass_type": pass_type.value, "cost": cost}])
+            query_handler.execute(query).returns(prices)
         get_price_controller = GetPricesController(query_handler)  # type: ignore
 
+        payload = {"prices": [{"type": pass_type.value, "age": age, "date": date}]}
         with app.test_request_context(json=payload):
             response = get_price_controller.get_prices()
 
+        expected_response = {"prices": [{"pass_type": pass_type.value, "cost": 100}]}
         expect(response.json).to(equal(expected_response))
