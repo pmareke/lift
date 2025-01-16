@@ -27,3 +27,14 @@ class TestGetPricesController:
 
         expected_response = {"prices": [{"pass_type": pass_type.value, "cost": 100}]}
         expect(response.json).to(equal(expected_response))
+
+    def test_get_prices_for_non_existing_type(self) -> None:
+        payload = {"prices": [{"type": "NON_EXISTING_TYPE"}]}
+        query_handler = Mimic(Spy, GetPricesQueryHandler)
+        expected_response = {"cost": 0}
+        get_prices_controller = GetPricesController(query_handler)  # type: ignore
+
+        with app.test_request_context(json=payload):
+            response = get_prices_controller.get_prices()
+
+        expect(response.json).to(equal(expected_response))
