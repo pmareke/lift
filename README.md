@@ -9,7 +9,7 @@
 This application solves the problem of calculating the pricing for ski lift passes.
 There's some intricate logic linked to what kind of lift pass you want, your age and the specific date at which you'd like to ski. 
 
-***There's a new feature request, be able to get the price for several lift passes, not just one.***
+***There's a new feature request: be able to get the price for several lift passes, not just one.***
 
 Currently the pricing for a single lift pass is implemented, unfortunately the code as it is designed is ***not reusable***.
 
