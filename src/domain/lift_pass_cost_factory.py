@@ -20,7 +20,7 @@ class LiftPassCostFactory:
     def make(
         props: LiftPassCostProps,
         pass_repository: LiftPassRepository,
-        holidays_repository: LiftPassHolidayRepository,
+        holiday_repository: LiftPassHolidayRepository,
     ) -> LiftPassCost:
         pass_type = props.pass_type
         age = props.age
@@ -28,4 +28,4 @@ class LiftPassCostFactory:
         if pass_type.is_night:
             return NightLiftPassCost(pass_repository, age)
 
-        return OneJourLiftPassCost(pass_repository, holidays_repository, age, date)
+        return OneJourLiftPassCost(pass_repository, holiday_repository, age, date)
