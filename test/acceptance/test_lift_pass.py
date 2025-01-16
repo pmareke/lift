@@ -10,7 +10,7 @@ NIGHT = LiftPassType.NIGHT
 ONE_JOUR = LiftPassType.ONE_JOUR
 
 
-class TestLiftPass:
+class TestLiftPassAcceptance:
     def setup_method(self) -> None:
         self.client = app.test_client()
 
