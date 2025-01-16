@@ -77,3 +77,23 @@ class TestLiftPass:
         response = self.client.get("/prices", query_string=query_string)
 
         expect(response.json).to(equal({"cost": expected_cost}))
+
+    def test_multiple_prices(self) -> None:
+        payload = {
+            "prices": [
+                {"type": ONE_JOUR.value, "age": 10},
+                {"type": NIGHT.value, "age": 65},
+            ]
+        }
+        response = self.client.post("/prices", json=payload)
+
+        expect(response.json).to(
+            equal(
+                {
+                    "prices": [
+                        {"pass_type": ONE_JOUR.value, "cost": 25},
+                        {"pass_type": NIGHT.value, "cost": 8},
+                    ]
+                }
+            )
+        )

@@ -8,11 +8,11 @@ from src.domain.lift_pass_repository import LiftPassRepository
 
 
 @dataclass
-class GetPriceQuery:
-    price: LiftPassPrice
+class GetPricesQuery:
+    prices: list[LiftPassPrice]
 
 
-class GetPriceQueryHandler:
+class GetPricesQueryHandler:
     def __init__(
         self,
         pass_repository: LiftPassRepository,
@@ -21,14 +21,21 @@ class GetPriceQueryHandler:
         self.pass_repository = pass_repository
         self.holiday_repository = holiday_repository
 
-    def execute(self, query: GetPriceQuery) -> float:
-        lift_pass_cost = self._generate_lift_pass_cost(query)
-        return lift_pass_cost.calculate()
+    def execute(self, query: GetPricesQuery) -> list:
+        prices = []
+        for price in query.prices:
+            lift_pass_cost = self._generate_lift_pass_cost(price)
+            lift_pass_price = {
+                "pass_type": price.pass_type.value,
+                "cost": lift_pass_cost.calculate(),
+            }
+            prices.append(lift_pass_price)
+        return prices
 
-    def _generate_lift_pass_cost(self, query: GetPriceQuery) -> LiftPassCost:
-        pass_type = query.price.pass_type
-        age = query.price.age
-        date = query.price.date
+    def _generate_lift_pass_cost(self, price: LiftPassPrice) -> LiftPassCost:
+        pass_type = price.pass_type
+        age = price.age
+        date = price.date
         props = LiftPassCostProps(pass_type, age, date)
         return LiftPassCostFactory.make(
             props,
