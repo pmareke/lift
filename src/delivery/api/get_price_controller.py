@@ -19,8 +19,8 @@ class GetPriceController:
 
         age = request.args.get("age")
         date = request.args.get("date")
-        price = LiftPassProps(pass_type, age, date)
-        query = GetPriceQuery(price)
+        lift_pass_props = LiftPassProps(pass_type, age, date)
+        query = GetPriceQuery(lift_pass_props)
 
         cost = self.query_handler.execute(query)
 
