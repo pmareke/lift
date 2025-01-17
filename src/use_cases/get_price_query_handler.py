@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from src.domain.lift_pass_cost import LiftPassCost
-from src.domain.lift_pass_cost_factory import LiftPassCostFactory, LiftPassCostProps
+from src.domain.lift_pass_cost_factory import LiftPassCostFactory
 from src.domain.lift_pass_holiday_repository import LiftPassHolidayRepository
 from src.domain.lift_pass_price import LiftPassPrice
 from src.domain.lift_pass_repository import LiftPassRepository
@@ -26,12 +26,8 @@ class GetPriceQueryHandler:
         return lift_pass_cost.calculate()
 
     def _generate_lift_pass_cost(self, price: LiftPassPrice) -> LiftPassCost:
-        pass_type = price.pass_type
-        age = price.age
-        date = price.date
-        props = LiftPassCostProps(pass_type, age, date)
         return LiftPassCostFactory.make(
-            props,
             self.pass_repository,
             self.holiday_repository,
+            price,
         )
