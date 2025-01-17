@@ -3,7 +3,7 @@ from doublex_expects import have_been_called_with
 from expects import equal, expect
 
 from src.delivery.api.get_price_controller import GetPriceController
-from src.domain.lift_pass_price import LiftPassPrice
+from src.domain.lift_pass_props import LiftPassProps
 from src.domain.lift_pass_type import LiftPassType
 from src.main import create_app
 from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHandler
@@ -17,8 +17,8 @@ class TestGetPriceControllerAcceptance:
         date = "2022-01-01"
         cost = 100
         query_string = {"type": pass_type.value, "age": age, "date": date}
-        price = LiftPassPrice(pass_type, age, date)
-        query = GetPriceQuery(price)
+        props = LiftPassProps(pass_type, age, date)
+        query = GetPriceQuery(props)
         expected_response = {"cost": cost}
         with Mimic(Spy, GetPriceQueryHandler) as query_handler:
             query_handler.execute(query).returns(cost)
