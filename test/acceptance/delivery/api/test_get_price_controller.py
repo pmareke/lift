@@ -8,7 +8,7 @@ from src.main import app
 from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHandler
 
 
-class TestGetPriceController:
+class TestGetPriceControllerAcceptance:
     def test_get_price(self) -> None:
         pass_type = LiftPassType.ONE_JOUR
         age = "18"

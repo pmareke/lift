@@ -30,9 +30,20 @@ check-format: ## Check format
 check-typing: ## Check typing
 	docker compose run --rm --no-deps lift poetry run mypy src test
 
+.PHONY: test-unit
+test-unit: ## Run unit tests
+	docker compose run --rm lift poetry run pytest test/unit -ra
+
+.PHONY: test-integration
+test-integration: ## Run integration tests
+	docker compose run --rm lift poetry run pytest test/integration -ra
+
+.PHONY: test-acceptance
+test-acceptance: ## Run acceptance tests
+	docker compose run --rm lift poetry run pytest test/acceptance -ra
+
 .PHONY: test
-test: ## Run tests
-	docker compose run --rm lift poetry run pytest test -ra
+test: test-unit test-integration test-acceptance ## Run tests
 
 .PHONY: test-coverage
 test-coverage: ## Run tests coverage

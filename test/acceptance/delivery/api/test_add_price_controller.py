@@ -11,7 +11,7 @@ from src.use_cases.add_price_command_handler import (
 )
 
 
-class TestAddPriceController:
+class TestAddPriceControllerAcceptance:
     def test_add_price(self) -> None:
         pass_type = LiftPassType.ONE_JOUR
         cost = 100
