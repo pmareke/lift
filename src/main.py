@@ -24,11 +24,11 @@ def create_app(test: bool = False) -> Flask:
         pass_repository = SqlLiftPassRepositoryFactory.make()
         holiday_repository = SqlLiftPassHolidayRepositoryFactory.make()
 
-    add_price_command_handler = AddPriceCommandHandler(pass_repository)
+    add_price_command_handler = AddPriceCommandHandler(pass_repository)  # type: ignore
     add_price_controller = AddPriceController(add_price_command_handler)
     app.route("/prices", methods=["PUT"])(add_price_controller.add_price)
 
-    get_price_query_handler = GetPriceQueryHandler(pass_repository, holiday_repository)
+    get_price_query_handler = GetPriceQueryHandler(pass_repository, holiday_repository)  # type: ignore
     get_price_controller = GetPriceController(get_price_query_handler)
     app.route("/prices", methods=["GET"])(get_price_controller.get_price)
     return app
