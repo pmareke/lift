@@ -14,12 +14,13 @@ class GetPriceController:
     def get_price(self) -> Response:
         try:
             pass_type = LiftPassType(request.args["type"])
-            age = request.args.get("age")
-            date = request.args.get("date")
-            price = LiftPassPrice(pass_type, age, date)
-            query = GetPriceQuery(price)
         except ValueError:
             return make_response({"cost": 0}, OK)
+
+        age = request.args.get("age")
+        date = request.args.get("date")
+        price = LiftPassPrice(pass_type, age, date)
+        query = GetPriceQuery(price)
 
         cost = self.query_handler.execute(query)
 
