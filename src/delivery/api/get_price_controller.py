@@ -2,6 +2,7 @@ from http.client import OK
 
 from flask import Response, make_response, request
 
+from src.domain.lift_pass_price import LiftPassPrice
 from src.domain.lift_pass_type import LiftPassType
 from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHandler
 
@@ -15,7 +16,8 @@ class GetPriceController:
             pass_type = LiftPassType(request.args["type"])
             age = request.args.get("age")
             date = request.args.get("date")
-            query = GetPriceQuery(pass_type, age, date)
+            price = LiftPassPrice(pass_type, age, date)
+            query = GetPriceQuery(price)
         except ValueError:
             return make_response({"cost": 0}, OK)
 

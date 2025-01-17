@@ -3,15 +3,13 @@ from dataclasses import dataclass
 from src.domain.lift_pass_cost import LiftPassCost
 from src.domain.lift_pass_cost_factory import LiftPassCostFactory, LiftPassCostProps
 from src.domain.lift_pass_holiday_repository import LiftPassHolidayRepository
+from src.domain.lift_pass_price import LiftPassPrice
 from src.domain.lift_pass_repository import LiftPassRepository
-from src.domain.lift_pass_type import LiftPassType
 
 
 @dataclass
 class GetPriceQuery:
-    pass_type: LiftPassType
-    age: str | None = None
-    date: str | None = None
+    price: LiftPassPrice
 
 
 class GetPriceQueryHandler:
@@ -24,13 +22,13 @@ class GetPriceQueryHandler:
         self.holiday_repository = holiday_repository
 
     def execute(self, query: GetPriceQuery) -> float:
-        lift_pass_cost = self._generate_lift_pass_cost(query)
+        lift_pass_cost = self._generate_lift_pass_cost(query.price)
         return lift_pass_cost.calculate()
 
-    def _generate_lift_pass_cost(self, query: GetPriceQuery) -> LiftPassCost:
-        pass_type = query.pass_type
-        age = query.age
-        date = query.date
+    def _generate_lift_pass_cost(self, price: LiftPassPrice) -> LiftPassCost:
+        pass_type = price.pass_type
+        age = price.age
+        date = price.date
         props = LiftPassCostProps(pass_type, age, date)
         return LiftPassCostFactory.make(
             props,
