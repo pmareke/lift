@@ -5,12 +5,13 @@ from typing import Generator
 import pytest
 import requests
 
-from src.main import app
+from src.main import create_app
 
 TEST_PORT = 5000
 
 
 def server(port: int) -> None:
+    app = create_app()
     app.run(port=port)
 
 

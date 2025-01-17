@@ -4,7 +4,7 @@ import pytest
 from expects import equal, expect
 
 from src.domain.lift_pass_type import LiftPassType
-from src.main import app
+from src.main import create_app
 
 NIGHT = LiftPassType.NIGHT
 ONE_JOUR = LiftPassType.ONE_JOUR
@@ -12,6 +12,7 @@ ONE_JOUR = LiftPassType.ONE_JOUR
 
 class TestLiftPassAcceptance:
     def setup_method(self) -> None:
+        app = create_app()
         self.client = app.test_client()
 
     def test_add_new_price(self) -> None:

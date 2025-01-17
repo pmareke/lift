@@ -10,7 +10,7 @@ from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHa
 
 class TestGetPriceControllerAcceptance:
     def test_get_price(self) -> None:
-        app = create_app()
+        app = create_app(test=True)
         pass_type = LiftPassType.ONE_JOUR
         age = "18"
         date = "2022-01-01"
@@ -29,7 +29,7 @@ class TestGetPriceControllerAcceptance:
         expect(response.json).to(equal(expected_response))
 
     def test_get_price_for_non_existing_type(self) -> None:
-        app = create_app()
+        app = create_app(test=True)
         query_string = {"type": "non-existing-type"}
         query_handler = Mimic(Spy, GetPriceQueryHandler)
         expected_response = {"cost": 0}

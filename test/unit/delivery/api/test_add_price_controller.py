@@ -13,7 +13,7 @@ from src.use_cases.add_price_command_handler import (
 
 class TestAddPriceControllerAcceptance:
     def test_add_price(self) -> None:
-        app = create_app()
+        app = create_app(test=True)
         pass_type = LiftPassType.ONE_JOUR
         cost = 100
         expected_response = {"type": pass_type.value, "cost": cost}
