@@ -9,7 +9,7 @@ from src.domain.lift_pass_repository import LiftPassRepository
 
 @dataclass
 class GetPriceQuery:
-    props: LiftPassProps
+    lift_pass_props: LiftPassProps
 
 
 class GetPriceQueryHandler:
@@ -22,12 +22,12 @@ class GetPriceQueryHandler:
         self.holiday_repository = holiday_repository
 
     def execute(self, query: GetPriceQuery) -> float:
-        lift_pass_cost = self._create_lift_pass_cost(query.props)
+        lift_pass_cost = self._create_lift_pass_cost(query.lift_pass_props)
         return lift_pass_cost.calculate()
 
-    def _create_lift_pass_cost(self, props: LiftPassProps) -> LiftPassCost:
+    def _create_lift_pass_cost(self, lift_pass_props: LiftPassProps) -> LiftPassCost:
         return LiftPassCostFactory.make(
             self.pass_repository,
             self.holiday_repository,
-            props,
+            lift_pass_props,
         )
