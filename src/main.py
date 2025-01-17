@@ -3,6 +3,7 @@ from flask import Flask
 
 from src.delivery.api.add_price_controller import AddPriceController
 from src.delivery.api.get_price_controller import GetPriceController
+from src.delivery.api.get_prices_controller import GetPricesController
 from src.infrastructure.mysql.sql_lift_pass_holiday_repository import (
     SqlLiftPassHolidayRepository,
     SqlLiftPassHolidayRepositoryFactory,
@@ -13,6 +14,7 @@ from src.infrastructure.mysql.sql_lift_pass_repository import (
 )
 from src.use_cases.add_price_command_handler import AddPriceCommandHandler
 from src.use_cases.get_price_query_handler import GetPriceQueryHandler
+from src.use_cases.get_prices_query_handler import GetPricesQueryHandler
 
 
 def create_app(test: bool = False) -> Flask:
@@ -31,6 +33,10 @@ def create_app(test: bool = False) -> Flask:
     get_price_query_handler = GetPriceQueryHandler(pass_repository, holiday_repository)  # type: ignore
     get_price_controller = GetPriceController(get_price_query_handler)
     app.route("/prices", methods=["GET"])(get_price_controller.get_price)
+
+    get_prices_query_handler = GetPricesQueryHandler(pass_repository, holiday_repository)  # type: ignore
+    get_prices_controller = GetPricesController(get_prices_query_handler)
+    app.route("/prices", methods=["POST"])(get_prices_controller.get_prices)
 
     return app
 

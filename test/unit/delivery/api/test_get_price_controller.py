@@ -9,7 +9,7 @@ from src.main import create_app
 from src.use_cases.get_price_query_handler import GetPriceQuery, GetPriceQueryHandler
 
 
-class TestGetPriceControllerAcceptance:
+class TestGetPriceController:
     def test_get_price(self) -> None:
         app = create_app(test=True)
         pass_type = LiftPassType.ONE_JOUR
