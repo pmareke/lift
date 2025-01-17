@@ -31,6 +31,7 @@ def create_app(test: bool = False) -> Flask:
     get_price_query_handler = GetPriceQueryHandler(pass_repository, holiday_repository)  # type: ignore
     get_price_controller = GetPriceController(get_price_query_handler)
     app.route("/prices", methods=["GET"])(get_price_controller.get_price)
+
     return app
 
 
